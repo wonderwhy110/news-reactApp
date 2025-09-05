@@ -1,0 +1,89 @@
+.card {
+  box-sizing: border-box;
+  max-width: 824px;
+  min-width: 320px;
+  padding: 20px 24px 24px;
+  border-radius: 24px;
+  box-shadow: 0 6px 34px rgba(0, 0, 0, 0.12);
+
+  flex: 1 1 auto;
+
+  p {
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 400;
+    margin-top: 20px;
+  }
+
+  .card-title {
+    display: flex;
+    flex: 1 1 auto;
+    gap: 12px;
+    margin: 0;
+
+    h1 {
+      text-align: center;
+      font-family: "Neue Haas Unica W1G";
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 28px;
+      margin: 0;
+    }
+  }
+  .card-fields {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px;
+
+    .field-row {
+      display: flex;
+    }
+  }
+  a {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+  }
+  .card-footer {
+    margin-block-start: 20px;
+    display: flex;
+    flex-flow: row wrap-reverse;
+    gap: 12px;
+    align-items: center;
+
+    .button {
+      display: flex;
+      align-items: center;
+      flex: 0 1 auto;
+      &.secondary {
+        width: 143px;
+        padding: 0;
+        padding: 10px 20px;
+      }
+
+      i.bx.bx-heart {
+        color: #000000;
+        font-weight: 1000;
+        font-size: 24px;
+        line-height: 1;
+      }
+      .like-count {
+        padding: 0;
+        margin: 0;
+        margin: 2px 6px;
+        line-height: 20px;
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+.content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  gap: 65px;
+  align-items: center;
+  box-sizing: border-box;
+  margin-top: 65px;
+}

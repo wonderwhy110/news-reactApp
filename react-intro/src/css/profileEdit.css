@@ -1,0 +1,92 @@
+.profile-edit {
+  box-sizing: border-box;
+  max-width: 824px;
+  min-width: 320px;
+  padding: 20px 24px 24px;
+  border-radius: 24px;
+  box-shadow: 0 6px 34px rgba(0, 0, 0, 0.12);
+  flex: 1 1 auto;
+}
+.user-info {
+  display: flex;
+  flex-direction: row;
+}
+
+.avatar-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #00ff48;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.disabled-input {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.save-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+  background-color: #0056b3;
+}
+
+.field-row {
+  display: flex;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.card.profile {
+  display: flex;
+  flex-direction: column;
+}
+.text-input.large.post {
+  min-width: 100px;
+}
+
+.field-row.post {
+  min-width: 100px;
+}

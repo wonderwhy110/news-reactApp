@@ -1,0 +1,64 @@
+.header {
+  flex: 0 0 64px;
+  width: 100%;
+  background-color: rgba(246, 247, 248, 1);
+}
+
+.logo-container {
+  flex: 1 0 auto;
+  display: flex;
+  margin: auto;
+  gap: 32px;
+
+  width: 824px;
+  height: 100%;
+  background-color: rgba(246, 247, 248, 1);
+
+  .text-input {
+    max-width: 320px;
+  }
+}
+
+.hr-line {
+  background-color: rgba(0, 16, 36, 0.1);
+  margin: 0;
+  width: 824px;
+  height: 1px;
+  border-style: none;
+  margin: 0 auto;
+}
+
+.logo {
+  width: 29px;
+  height: 29px;
+  margin: auto 0;
+  border-radius: 50%;
+}
+.left-group {
+  display: flex;
+  align-items: center;
+  width: 548px;
+  gap: 29px; /* отступ между элементами внутри группы */
+}
+.right-group {
+  width: 244px;
+  display: flex;
+  align-items: center;
+
+  gap: 10px; /* отступ между элементами внутри группы */
+
+  a {
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+}
+
+.reg-arrow {
+  width: 24px;
+  height: 24px;
+}
+.avatar-post {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+}
