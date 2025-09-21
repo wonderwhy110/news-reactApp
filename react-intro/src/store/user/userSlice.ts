@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 
 interface IUser{
-    id:  number
+    userId:  number
     email: string
     token: string
 }

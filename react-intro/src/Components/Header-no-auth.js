@@ -6,12 +6,53 @@ import { useAppDispatch } from "../store/hooks";
 import { logout } from "../store/user/userSlice";
 import { removeTokenFromLocalStorage } from "../helpers/localStorage.helper";
 import { toast } from "react-toastify";
+import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { instance } from "../api/axios.api";
 function HeaderNoAuth() {
-  const isAuth = useAuth();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [user, setUser] = useState({
+    name: "",
+    avatar: "",
+    bio: "",
+    email: "",
+  });
+
+  const [loading, setLoading] = useState(true);
+  const { isAuth } = useAuth();
+
+  const getUserIdFromToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.id;
+      } catch (error) {
+        console.error("Ошибка декодирования токена:", error);
+      }
+    }
+    return null;
+  };
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = getUserIdFromToken();
+        if (userId) {
+          // Используем существующий endpoint /user/:id
+          const response = await instance.get(`/user/${userId}`);
+          setUser(response.data);
+        }
+      } catch (error) {
+        console.error("Ошибка загрузки пользователя:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -35,7 +76,7 @@ function HeaderNoAuth() {
             <input
               type="text"
               className="text-input medium"
-              placeholder="Поиск по t-News"
+              placeholder="Поиск по News"
             />
           </div>
           {isAuth ? (
@@ -45,13 +86,18 @@ function HeaderNoAuth() {
                   Выйти
                 </a>
                 <img className="reg-arrow" src={arrow} alt="reg" />
+
+                <img
+                  className="avatar-post"
+                  src={
+                    user.avatar
+                      ? `http://localhost:3000/uploads/${user.avatar}`
+                      : avatar
+                  }
+                  alt="Аватар"
+                  onClick={userHandler}
+                />
               </>
-              <img
-                className="logo"
-                src={avatar}
-                alt="icon"
-                onClick={userHandler}
-              />
             </div>
           ) : (
             <div className="right-group">

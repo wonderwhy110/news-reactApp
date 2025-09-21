@@ -14,6 +14,8 @@ function SectionLogin() {
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
 
+  // SectionLogin.js
+  // Pages/Login.js
   const loginHandler = async (e) => {
     try {
       e.preventDefault();
@@ -21,14 +23,33 @@ function SectionLogin() {
 
       if (data) {
         setTokenToLocalStorage("token", data.token);
-        dispatch(login(data));
+
+        // Сохраняем пользователя в localStorage
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            userId: data.userId,
+            email: data.email,
+          })
+        );
+
+        dispatch(
+          login({
+            userId: data.userId,
+            email: data.email,
+            token: data.token,
+            avatar: data.avatar,
+          })
+        );
 
         toast.success("Вы вошли в аккаунт.");
         navigate("/");
       }
     } catch (err) {
-      const error = err.response?.data?.message || "Ошибка авторизации";
-      toast.error(error.toString());
+      console.log("Login error:", err);
+      const errorMessage =
+        err.response?.data?.message || err.message || "Ошибка авторизации";
+      toast.error(errorMessage);
     }
   };
 

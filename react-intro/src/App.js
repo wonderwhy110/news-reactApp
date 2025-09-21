@@ -3,7 +3,7 @@ import "./App.css";
 import HeaderNoAuth from "./Components/Header-no-auth";
 import ContentNoAuth from "./Components/Content-no-auth";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import Registration from "./Pages/Registration";
 import Login from "./Pages/Login";
 import User from "./Pages/User";
@@ -12,6 +12,7 @@ import { useAppDispatch } from "./store/hooks";
 import { getTokenFromLocalStorage } from "./helpers/localStorage.helper";
 import { AuthService } from "./services/auth.service";
 import { login, logout } from "./store/user/userSlice";
+import AuthInitializer from "./Components/AuthInitializer";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -39,6 +40,7 @@ function App() {
   return (
     <div className="app">
       <Router>
+           <AuthInitializer />
         <Routes>
           {/* Главная страница (/) - с HeaderNoAuth и ContentNoAuth */}
           <Route
@@ -54,7 +56,8 @@ function App() {
           {/* Страница регистрации  */}
           <Route path="/registration" element={<Registration />} />
           <Route path="/login" element={<Login />} />
-           <Route path="/user" element={<User />} />
+          <Route path="/user" element={<User />} />
+          <Route path="/post" element={<ContentNoAuth />} />
         </Routes>
       </Router>
     </div>

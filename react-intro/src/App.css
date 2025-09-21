@@ -4,7 +4,7 @@
 @import "css/headerNoAuth.css";
 @import "css/card.css";
 @import "css/profileEdit.css";
-
+@import "css/media.css";
 
 :root {
   --bg-neutral-1: rgba(36, 74, 127, 0.06);
@@ -13,10 +13,10 @@
   --bg-active-1: rgba(77, 162, 179, 0.2);
   --text-primary: rgba(0, 0, 0, 0.75);
   --text-secondary: rgba(0, 0, 0, 0.54);
-  --bg-accent-1: rgba(255, 221, 45, 1);
-  --bg-accent-hover: rgb(255, 231, 113);
-  --bg-accent-active: rgb(228, 202, 54);
-  --text-action: rgba(18, 109, 247, 1);
+  --bg-accent-1: rgba(188, 45, 255, 0.5);
+  --bg-accent-hover: rgb(188, 113, 255, 0.5);
+  --bg-accent-active: rgb(188, 113, 255, 0.5);
+  --text-action:rgba(188, 45, 255);
   --text-primary-on-accent: rgba(51, 51, 51, 1);
 }
 
@@ -58,19 +58,17 @@ a {
 
 .success {
   color: rgb(114, 168, 33);
-    align-content: center;
+  align-content: center;
   align-items: center;
-  height:auto;
-  a{
-     color:rgb(96, 153, 134);
-     margin-top: 30px;
+  height: auto;
+  a {
+    color: rgb(96, 153, 134);
+    margin-top: 30px;
   }
-
 }
 .messages {
   align-content: center;
   align-items: center;
   margin: 30px auto;
-    height:auto;
-  
+  height: auto;
 }

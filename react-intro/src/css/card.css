@@ -1,6 +1,7 @@
 .card {
   box-sizing: border-box;
   max-width: 824px;
+  width: 824px;
   min-width: 320px;
   padding: 20px 24px 24px;
   border-radius: 24px;
@@ -61,6 +62,12 @@
       }
 
       i.bx.bx-heart {
+        color: #000000;
+        font-weight: 1000;
+        font-size: 24px;
+        line-height: 1;
+      }
+      i.bx.bxs-heart {
         color: #000000;
         font-weight: 1000;
         font-size: 24px;

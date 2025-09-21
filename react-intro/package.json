@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@nestjs/config": "^4.0.2",
+    "@nestjs/platform-express": "^11.1.6",
     "@reduxjs/toolkit": "^2.8.2",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.4",
@@ -11,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.11.0",
     "jwt-decode": "^4.0.0",
+    "multer": "^2.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-redux": "^9.2.0",
@@ -43,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/multer": "^2.0.0"
   }
 }

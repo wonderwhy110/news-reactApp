@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { AuthService } from "../services/auth.service";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "../store/hooks";
+import { login } from "../store/user/userSlice";
+import { useNavigate } from "react-router-dom";
+import { setTokenToLocalStorage } from "../helpers/localStorage.helper";
 
 function Section() {
   const [email, setEmail] = useState("");
@@ -10,6 +14,9 @@ function Section() {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [error, setError] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  const dispatch = useAppDispatch(); // Переместите dispatch наверх
+  const navigate = useNavigate();
 
   const regHandler = async (event) => {
     event.preventDefault();
@@ -29,26 +36,52 @@ function Section() {
     setError(false);
 
     try {
-      const data = await AuthService.registration({ email, password });
-      if (data) {
-        toast.success("Вы зарегестрировались.");
-        setSubmitted(true);
+      // 1. Регистрация
+      const regData = await AuthService.registration({ email, password });
+
+      if (regData) {
+        toast.success("Вы зарегистрировались.");
+
+        // 2. Автоматический вход после успешной регистрации
+         try {
+      
+              const data = await AuthService.login({ email, password });
+        
+              if (data) {
+                setTokenToLocalStorage("token", data.token);
+        
+                // Сохраняем пользователя в localStorage
+                localStorage.setItem(
+                  "user",
+                  JSON.stringify({
+                    userId: data.userId,
+                    email: data.email,
+                  })
+                );
+        
+                dispatch(
+                  login({
+                    userId: data.userId,
+                    email: data.email,
+                    token: data.token,
+                    avatar: data.avatar,
+                  })
+                );
+        
+                toast.success("Вы вошли в аккаунт.");
+                navigate("/");
+              }
+        } catch (loginError) {
+          toast.error(
+            "Ошибка автоматического входа: " +
+              loginError.response?.data?.message
+          );
+        }
       }
     } catch (err) {
       const error = err.response?.data?.message || "Ошибка регистрации";
       toast.error(error.toString());
     }
-  };
-
-  const successMessage = () => {
-    return (
-      <div className="success" style={{ display: submitted ? "" : "none" }}>
-        <h1>Successfully signed up!!!</h1>
-        <a href="/" style={{ marginTop: "20px" }}>
-          Перейти на сайт
-        </a>
-      </div>
-    );
   };
 
   return (
@@ -57,9 +90,10 @@ function Section() {
         className="content-reg"
         style={{ display: submitted ? "" : "none" }}
       >
-        <div className="messages" style={{ display: submitted ? "" : "none" }}>
-          {successMessage()}
-        </div>
+        <div
+          className="messages"
+          style={{ display: submitted ? "" : "none" }}
+        ></div>
       </section>
 
       <section className="content-reg">

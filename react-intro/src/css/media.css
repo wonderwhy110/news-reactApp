@@ -1,0 +1,65 @@
+@media screen and (max-width: 480px) {
+  html,
+  body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  #app {
+    flex-direction: column;
+
+    gap: 12px;
+    margin: 10px auto 0;
+
+    width: 100%;
+    max-width: 100%;
+
+    display: flex;
+  }
+
+  .container {
+    gap: 10px;
+  }
+  .header {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    margin: 0 auto;
+  }
+
+  .logo-container {
+    width: 100%;
+    max-width: 100%;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+  }
+
+  .left-group {
+    width: 100px;
+  }
+  .right-group {
+    width: 100px;
+  }
+  .card {
+    width: 324px;
+    flex: 1 1 auto;
+  }
+  .text-input.medium {
+    width: 150px;
+  }
+  .avatar {
+    width: 50px;
+    height: 50px;
+  }
+  .card-title {
+  }
+}
