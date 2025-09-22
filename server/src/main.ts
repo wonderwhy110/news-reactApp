@@ -15,12 +15,23 @@ async function bootstrap() {
   // Глобальная валидация
   app.useGlobalPipes(new ValidationPipe());
 
+  async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  
+  app.enableCors({
+    origin: [
+      'https://tnews-backend.onrender.com',
+      'http://localhost:3000',
+      'http://localhost:5173'
+    ],
+    credentials: true,
+  });
+  
+  app.setGlobalPrefix('api');
+  await app.listen(process.env.PORT || 3000);
+}
   // Глобальный префикс API
   app.setGlobalPrefix('api');
-
-  // Включение CORS
-  app.enableCors();
-
   await app.listen(process.env.PORT ?? 3000);
   
   console.log(`Application is running on: ${await app.getUrl()}`);
