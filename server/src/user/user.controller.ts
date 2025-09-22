@@ -15,6 +15,7 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
 } from '@nestjs/common';
+import { Express } from 'express';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -33,15 +34,11 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-    @Patch(':id')
+  @Patch(':id')
   @UseGuards(JwtAuthGuard) // Защитите endpoint авторизацией
-  async update(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto
-  ) {
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
-
 
   @Get(':id') // значит полный путь /user/:id
   async findOne(@Param('id') id: number) {

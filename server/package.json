@@ -5,7 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
- "scripts": {
+  "scripts": {
     "typeorm": "npm run build && npx typeorm migration:run",
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/src/main",
@@ -13,7 +13,6 @@
     "start:prod": "node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
-  
   "dependencies": {
     "@nestjs/cli": "^11.0.0",
     "@nestjs/common": "^11.0.1",
@@ -36,10 +35,9 @@
     "typeorm": "^0.3.25"
   },
   "devDependencies": {
-  
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
-    "@types/express": "^5.0.0",
+    "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/multer": "^2.0.0",
     "@types/node": "^22.10.7",
@@ -61,7 +59,6 @@
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
   },
-
   "jest": {
     "moduleFileExtensions": [
       "js",
