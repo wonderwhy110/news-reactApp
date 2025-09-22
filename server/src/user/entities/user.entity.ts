@@ -1,5 +1,5 @@
-import { Comment } from 'src/comments/entities/comment.entity';
-import { Post } from 'src/post/entities/post.entity';
+import { Comment } from '../../comments/entities/comment.entity';
+import { Post } from '../../post/entities/post.entity';
 import {
   Column,
   CreateDateColumn,

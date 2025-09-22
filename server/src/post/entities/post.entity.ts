@@ -1,6 +1,6 @@
 // post.entity.ts
-import { Comment } from 'src/comments/entities/comment.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Comment } from '../../comments/entities/comment.entity';
+import { User } from '../../user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -35,7 +35,6 @@ export class Post {
 
   @Column({ name: 'user_id' }) // Добавь name
   userId: number;
-  
 
   @OneToMany(() => Comment, (comment) => comment.post, {
     cascade: true,
