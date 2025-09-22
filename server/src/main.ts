@@ -20,7 +20,7 @@ async function bootstrap() {
   
   app.enableCors({
     origin: [
-      'https://tnews-backend.onrender.com',
+      'https://tnews-frontend.onrender.com',
       'http://localhost:3000',
       'http://localhost:5173'
     ],
