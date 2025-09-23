@@ -1,6 +1,18 @@
 {
   "version": 2,
-  "installCommand": "cd react-intro && npm install --production=false",
-  "buildCommand": "cd react-intro && npm run build",
-  "outputDirectory": "react-intro/build"
+  "builds": [
+    {
+      "src": "react-intro/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/react-intro/$1"
+    }
+  ]
 }
