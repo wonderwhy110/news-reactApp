@@ -24,7 +24,7 @@ import { CommentsModule } from './comments/comments.module';
         password: configService.get('DB_PASSWORD') || 'admin',
         database: configService.get('DB_NAME') || 'news',
         
-        synchronize: true, // Временно включите для создания таблиц
+       synchronize: configService.get('NODE_ENV') !== 'production', 
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         ssl: configService.get('NODE_ENV') === 'production' ? { 
           rejectUnauthorized: false 
