@@ -37,10 +37,14 @@ function App() {
     checkAuth();
   }, []);
 
+  const basename = window.location.hostname.includes("github.io")
+    ? "/news-reactApp"
+    : "";
+
   return (
     <div className="app">
-      <Router>
-           <AuthInitializer />
+      <Router basename={basename}>
+        <AuthInitializer />
         <Routes>
           {/* Главная страница (/) - с HeaderNoAuth и ContentNoAuth */}
           <Route
