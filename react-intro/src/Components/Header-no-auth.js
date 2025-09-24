@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { instance } from "../api/axios.api";
 function HeaderNoAuth() {
+  const UPLOADS_BASE_URL = process.env.REACT_APP_UPLOADS_BASE_URL;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [user, setUser] = useState({

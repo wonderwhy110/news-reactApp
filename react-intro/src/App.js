@@ -40,6 +40,7 @@ function App() {
   const basename = window.location.pathname.includes("/news-reactApp")
     ? "/news-reactApp"
     : "";
+    
 
   return (
     <div className="app">

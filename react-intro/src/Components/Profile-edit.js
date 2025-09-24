@@ -3,6 +3,7 @@ import { instance } from "../api/axios.api";
 import avatar from "../assets/default-avatar.png"; // правильное написание
 
 function ProfileEdit() {
+  const UPLOADS_BASE_URL = process.env.REACT_APP_UPLOADS_BASE_URL;
   const [user, setUser] = useState({
     name: "",
     avatar: "",
