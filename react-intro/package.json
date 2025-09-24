@@ -1,6 +1,6 @@
 {
   "name": "react-intro",
-  "homepage": "https://wonderwhy110.github.io/news-reactApp",
+ "homepage": "https://wonderwhy110.github.io/news-reactApp",
   "proxy": "https://tnews-backend.onrender.com",
   "version": "0.1.0",
   "private": true,
