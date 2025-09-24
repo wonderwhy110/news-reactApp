@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import HeaderNoAuth from "./Components/Header-no-auth";
 import ContentNoAuth from "./Components/Content-no-auth";
-import {HashRouter  as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 import Registration from "./Pages/Registration";
 import Login from "./Pages/Login";
@@ -37,11 +37,13 @@ function App() {
     checkAuth();
   }, []);
 
-
+  const basename = window.location.pathname.includes("/news-reactApp")
+    ? "/news-reactApp"
+    : "";
 
   return (
     <div className="app">
-      <Router >
+      <Router basename={basename}>
         <AuthInitializer />
         <Routes>
           {/* Главная страница (/) - с HeaderNoAuth и ContentNoAuth */}
