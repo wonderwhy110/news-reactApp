@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setTokenToLocalStorage } from "../helpers/localStorage.helper";
 import { AuthService } from "../services/auth.service";
 import { useAppDispatch } from "../store/hooks";
@@ -85,13 +85,13 @@ function SectionLogin() {
           </label>
         </div>
         <footer className="login-footer">
-          <a href="/registration">
+          <Link to="/registration">
             {" "}
             <button type="button" class="button secondary">
               {" "}
               Зарегестрироваться
             </button>
-          </a>
+          </Link>
           <button type="submit" class="button primary">
             {" "}
             Войти

@@ -3,7 +3,7 @@ import { AuthService } from "../services/auth.service";
 import { toast } from "react-toastify";
 import { useAppDispatch } from "../store/hooks";
 import { login } from "../store/user/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setTokenToLocalStorage } from "../helpers/localStorage.helper";
 
 function Section() {
@@ -152,9 +152,9 @@ function Section() {
           </div>
 
           <footer className="login-footer">
-            <a type="button" className="button secondary" href="/login">
+            <Link type="button" className="button secondary" to="/login">
               Войти
-            </a>
+            </Link>
 
             <button type="submit" className="button primary">
               Зарегистрироваться
