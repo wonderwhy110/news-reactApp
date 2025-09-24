@@ -43,7 +43,7 @@ function App() {
 
   return (
     <div className="app">
-      <Router basename={basename}>
+      <Router >
         <AuthInitializer />
         <Routes>
           {/* Главная страница (/) - с HeaderNoAuth и ContentNoAuth */}
