@@ -69,9 +69,9 @@ function HeaderNoAuth() {
       <header className="header">
         <div className="logo-container">
           <div className="left-group">
-            <a href="/">
+            <Link to="/">
               <img className="logo" src={logo} alt="logo" />
-            </a>
+            </Link>
 
             <input
               type="text"
@@ -82,9 +82,9 @@ function HeaderNoAuth() {
           {isAuth ? (
             <div className="right-group">
               <>
-                <a href="/" onClick={logoutHandler}>
+                <Link to="/" onClick={logoutHandler}>
                   Выйти
-                </a>
+                </Link>
                 <img className="reg-arrow" src={arrow} alt="reg" />
 
                 <img
@@ -101,9 +101,9 @@ function HeaderNoAuth() {
             </div>
           ) : (
             <div className="right-group">
-              <a href="/registration">Зарегестрироваться</a>
+              <Link to="/registration">Зарегестрироваться</Link>
               <img className="reg-arrow" src={arrow} alt="reg" />
-              <a href="/login">Войти</a>
+              <Link to="/login"> Войти</Link>
               <img className="reg-arrow" src={arrow} alt="reg" />
             </div>
           )}
