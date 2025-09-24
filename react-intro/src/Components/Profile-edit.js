@@ -167,7 +167,7 @@ function ProfileEdit() {
             <img
               src={
                 user.avatar
-                  ? `http://localhost:3000/uploads/${user.avatar}`
+                  ? `${UPLOADS_BASE_URL}/${user.avatar}`
                   : avatar
               }
               alt="Аватар"

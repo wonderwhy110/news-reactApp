@@ -150,7 +150,7 @@ function ContentNoAuth() {
                 className="avatar-post"
                 src={
                   post.user.avatar
-                    ? `http://localhost:3000/uploads/${post.user.avatar}`
+                    ? `${UPLOADS_BASE_URL}/${user.avatar}`
                     : avatar
                 }
                 alt="Аватар"
