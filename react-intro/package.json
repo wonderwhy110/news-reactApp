@@ -1,5 +1,7 @@
 {
   "name": "react-intro",
+  "homepage": "https://wonderwhy110.github.io/news-reactApp",
+  "proxy": "https://tnews-backend.onrender.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -24,12 +26,14 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@types/node": "^16.18.0",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "@types/node": "^16.18.0"
-    
+    "gh-pages": "^6.3.0"
   },
   "scripts": {
+       "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "start": "react-scripts start",
     "test": "react-scripts test",
