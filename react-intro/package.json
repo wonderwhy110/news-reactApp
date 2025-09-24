@@ -29,11 +29,12 @@
     "@types/node": "^16.18.0",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
-    "gh-pages": "^6.3.0"
+    "gh-pages": "^6.3.0",
+    "push-dir": "^0.4.1"
   },
   "scripts": {
-       "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "predeploy": "npm run build",
+     "deploy": "push-dir --dir=build --branch=gh-pages --remote=origin --verbose",
     "build": "react-scripts build",
     "start": "react-scripts start",
     "test": "react-scripts test",
