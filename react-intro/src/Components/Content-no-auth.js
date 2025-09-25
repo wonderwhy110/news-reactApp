@@ -35,15 +35,9 @@ function ContentNoAuth() {
     // Если userId undefined, но есть токен - декодируем токен
     if (user.token) {
       const decoded = decodeJWT(user.token);
-      console.log("Декодированный токен:", decoded);
+     
 
-      // Попробуем различные возможные поля для ID
-      const possibleIdFields = ["id", "userId", "user_id", "_id", "sub"];
-      for (const field of possibleIdFields) {
-        if (decoded[field] !== undefined) {
-          return decoded[field];
-        }
-      }
+      return decoded[id];
     }
 
     console.error("Не удалось найти ID пользователя");
@@ -52,7 +46,7 @@ function ContentNoAuth() {
 
   useEffect(() => {
     const userId = getUserId();
-    console.log("Текущий ID пользователя:", userId);
+    
   }, [user]);
 
   useEffect(() => {

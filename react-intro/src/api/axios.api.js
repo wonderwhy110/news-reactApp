@@ -2,9 +2,7 @@ import axios from "axios";
 import { getTokenFromLocalStorage } from "../helpers/localStorage.helper";
 
 export const instance = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' 
-    ? process.env.REACT_APP_API_URL 
-    : 'http://localhost:3000/api',
+   baseURL :process.env.REACT_APP_API_URL 
 });
 // Добавляем интерцептор для КАЖДОГО запроса
 instance.interceptors.request.use((config) => {
@@ -20,7 +18,5 @@ instance.interceptors.request.use((config) => {
 
 
 export const instanceWithoutAuth = axios.create({
-   baseURL: process.env.NODE_ENV === 'production' 
-    ? process.env.REACT_APP_API_URL 
-    : 'http://localhost:3000/api',
+   baseURL :process.env.REACT_APP_API_URL 
 });

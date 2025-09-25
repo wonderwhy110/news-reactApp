@@ -1,6 +1,6 @@
 {
   "name": "react-intro",
- "homepage": "https://wonderwhy110.github.io/news-reactApp",
+  "homepage": "https://wonderwhy110.github.io/news-reactApp",
   "proxy": "https://tnews-backend.onrender.com",
   "version": "0.1.0",
   "private": true,
@@ -13,6 +13,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.11.0",
+    "express": "^5.1.0",
     "jwt-decode": "^4.0.0",
     "multer": "^2.0.2",
     "react": "^18.2.0",
@@ -34,7 +35,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-     "deploy": "push-dir --dir=build --branch=gh-pages --remote=origin --verbose",
+    "deploy": "push-dir --dir=build --branch=gh-pages --remote=origin --verbose",
     "build": "react-scripts build",
     "start": "react-scripts start",
     "test": "react-scripts test",

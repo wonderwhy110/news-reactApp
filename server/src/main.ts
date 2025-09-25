@@ -11,9 +11,11 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'https://wonderwhy110.github.io', // ← ДОБАВЬТЕ ЭТУ СТРОКУ
+      'https://tnews-frontend.onrender.com',
+      'http://localhost:3001',
       'http://localhost:3000',
       'http://localhost:5173',
-      'http://127.0.0.1:3000' // ← ДОБАВЬТЕ и этот для локального тестирования
+      'http://127.0.0.1:3000', // ← ДОБАВЬТЕ и этот для локального тестирования
     ],
     credentials: true,
   });
@@ -28,9 +30,9 @@ async function bootstrap() {
 
   // Глобальный префикс API
   app.setGlobalPrefix('api');
-  
-  await app.listen(process.env.PORT ?? 3000);
-  
+
+  await app.listen(process.env.PORT);
+
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
