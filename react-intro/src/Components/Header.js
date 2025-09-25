@@ -1,4 +1,4 @@
-import logo from "../assets/tink-img.png";
+import logo from "../assets/earth.png";
 
 function Header() {
   

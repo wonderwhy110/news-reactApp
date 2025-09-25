@@ -35,9 +35,8 @@ function ContentNoAuth() {
     // Если userId undefined, но есть токен - декодируем токен
     if (user.token) {
       const decoded = decodeJWT(user.token);
-     
 
-      return decoded['id'];
+      return decoded["id"];
     }
 
     console.error("Не удалось найти ID пользователя");
@@ -46,7 +45,6 @@ function ContentNoAuth() {
 
   useEffect(() => {
     const userId = getUserId();
-    
   }, [user]);
 
   useEffect(() => {
@@ -134,45 +132,46 @@ function ContentNoAuth() {
 
   return (
     <section className="content">
-      {posts && posts.map((post) => {
-        const isLiked = isPostLiked(post);
-        const likesCount = getLikesCount(post);
+      {posts &&
+        posts.map((post) => {
+          const isLiked = isPostLiked(post);
+          const likesCount = getLikesCount(post);
 
-        return (
-          <div key={post.post_id} className="card">
-            <header className="card-title">
-              <img
-                className="avatar-post"
-                src={
-                  post.user.avatar
-                    ? `${UPLOADS_BASE_URL}/${post.user.avatar}`
-                    : avatar
-                }
-                alt="Аватар"
-              />
-              <h1>{post.user?.name || "Неизвестный автор"}</h1>
-            </header>
-            <p>{post.content}</p>
+          return (
+            <div key={post.post_id} className="card">
+              <header className="card-title">
+                <img
+                  className="avatar-post"
+                  src={
+                    post.user.avatar
+                      ? `${UPLOADS_BASE_URL}/${post.user.avatar}`
+                      : avatar
+                  }
+                  alt="Аватар"
+                />
+                <h1>{post.user?.name || "Неизвестный автор"}</h1>
+              </header>
+              <p>{post.content}</p>
 
-            <footer className="card-footer">
-              <button
-                type="button"
-                className="button primary"
-                onClick={() => handleLikeClick(post.post_id)}
-                disabled={likingPosts.has(post.post_id)}
-              >
-                <i className={`bx ${isLiked ? "bxs-heart" : "bx-heart"}`}></i>
-                <span className="like-count">{likesCount}</span>
-                {likingPosts.has(post.post_id)}
-              </button>
+              <footer className="card-footer">
+                <button
+                  type="button"
+                  className="button primary"
+                  onClick={() => handleLikeClick(post.post_id)}
+                  disabled={likingPosts.has(post.post_id)}
+                >
+                  <i className={`bx ${isLiked ? "bxs-heart" : "bx-heart"}`}></i>
+                  <span className="like-count">{likesCount}</span>
+                  {likingPosts.has(post.post_id)}
+                </button>
 
-              <button type="button" className="button secondary">
-                Комментарии {post.comments?.length || 0}
-              </button>
-            </footer>
-          </div>
-        );
-      })}
+                <button type="button" className="button secondary">
+                  Комментарии {post.comments?.length || 0}
+                </button>
+              </footer>
+            </div>
+          );
+        })}
     </section>
   );
 }
