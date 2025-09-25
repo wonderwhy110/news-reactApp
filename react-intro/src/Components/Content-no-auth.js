@@ -37,7 +37,7 @@ function ContentNoAuth() {
       const decoded = decodeJWT(user.token);
      
 
-      return decoded[id];
+      return decoded['id'];
     }
 
     console.error("Не удалось найти ID пользователя");
