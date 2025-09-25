@@ -140,7 +140,7 @@ function ContentNoAuth() {
 
   return (
     <section className="content">
-      {posts &&  posts.map((post) => {
+      {posts && posts.map((post) => {
         const isLiked = isPostLiked(post);
         const likesCount = getLikesCount(post);
 
@@ -150,8 +150,8 @@ function ContentNoAuth() {
               <img
                 className="avatar-post"
                 src={
-                  post?.user?.avatar
-                    ? `${UPLOADS_BASE_URL}/${user.avatar}`
+                  post.user.avatar
+                    ? `${UPLOADS_BASE_URL}/${post.user.avatar}`
                     : avatar
                 }
                 alt="Аватар"
