@@ -67,7 +67,7 @@ function HeaderNoAuth() {
   };
   
   const getAvatarUrl = (user) => {
-    сonsole.log("User avatar data:", post.user?.avatar);
+    //сonsole.log("User avatar data:", post.user?.avatar);
     return user?.avatar || avatar;
   };
   

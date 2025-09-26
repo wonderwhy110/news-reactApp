@@ -4,7 +4,7 @@ import avatar from "../assets/default-avatar.png";
 import { useAuth } from "../hooks/useAuth";
 
 const getAvatarUrl = (user) => {
-  сonsole.log("User avatar data:", post.user?.avatar);
+  //сonsole.log("User avatar data:", post.user?.avatar);
   return user?.avatar || avatar;
 };
 

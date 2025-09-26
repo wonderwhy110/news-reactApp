@@ -3,7 +3,7 @@ import { instance } from "../api/axios.api";
 import avatar from "../assets/default-avatar.png"; // правильное написание
 
 const getAvatarUrl = (user) => {
-  сonsole.log("User avatar data:", post.user?.avatar);
+  //сonsole.log("User avatar data:", post.user?.avatar);
   return user?.avatar || avatar;
 };
 
@@ -174,7 +174,6 @@ function ProfileEdit() {
               className="avatar"
               src={getAvatarUrl(user?.avatar, avatar)}
               alt="Аватар"
-              onClick={userHandler}
               onError={(e) => {
                 e.target.src = avatar;
               }}
