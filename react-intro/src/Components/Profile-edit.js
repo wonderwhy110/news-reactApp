@@ -104,65 +104,61 @@ function ProfileEdit() {
     }
   };
   // Загрузка аватара
-  const handleAvatarUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  
+const handleAvatarUpload = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
 
-    console.log("Выбранный файл:", file.name, file.type, file.size);
+  console.log("=== AVATAR UPLOAD DEBUG ===");
+  console.log("API_BASE_URL:", API_BASE_URL);
+  
+  const userId = getUserIdFromToken();
+  console.log("User ID from token:", userId);
 
-    if (!file.type.startsWith("image/")) {
-      alert("Пожалуйста, выберите изображение");
-      return;
+  if (!userId) {
+    alert("Ошибка аутентификации");
+    return;
+  }
+
+  setUploading(true);
+  try {
+    const formData = new FormData();
+    formData.append("avatar", file);
+
+    // Используем прямой fetch вместо axios для теста
+    const response = await fetch(`${API_BASE_URL}/user/${userId}/avatar`, {
+      method: 'PATCH',
+      body: formData,
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    console.log("Response status:", response.status);
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      alert("Размер файла не должен превышать 5MB");
-      return;
-    }
+    const result = await response.json();
+    console.log("✅ Успешный ответ:", result);
 
-    setUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append("avatar", file);
-
-      const userId = getUserIdFromToken();
-      if (!userId) {
-        alert("Ошибка аутентификации");
-        return;
-      }
-
-      console.log("Отправка запроса на:", `/user/${userId}/avatar`);
-      console.log("FormData содержимое:");
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-
-      const response = await instance.patch(
-        `/user/${userId}/avatar`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      setUser((prev) => ({ ...prev, avatar: response.data.avatar }));
+    // Проверяем структуру ответа
+    if (result.avatar) {
+      setUser((prev) => ({ ...prev, avatar: result.avatar }));
       alert("Аватар успешно обновлен!");
-    } catch (error) {
-      console.error("Полная ошибка загрузки аватара:", error);
-      console.error("Response data:", error.response?.data);
-      console.error("Response status:", error.response?.status);
-      alert(
-        `Ошибка при загрузке аватара: ${
-          error.response?.data?.message || error.message
-        }`
-      );
-    } finally {
-      setUploading(false);
+    } else {
+      console.warn("Аватар не пришел в ответе:", result);
     }
-  };
 
+  } catch (error) {
+    console.error("❌ Ошибка загрузки:", error);
+    alert(`Ошибка при загрузке аватара: ${error.message}`);
+  } finally {
+    setUploading(false);
+  }
+};
   if (loading) return <div>Загрузка...</div>;
 
   return (

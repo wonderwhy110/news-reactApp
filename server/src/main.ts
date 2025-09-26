@@ -17,6 +17,7 @@ async function bootstrap() {
       'http://localhost:5173',
       'http://127.0.0.1:3000', // ← ДОБАВЬТЕ и этот для локального тестирования
     ],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
 

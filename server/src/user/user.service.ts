@@ -50,16 +50,25 @@ export class UserService {
     return this.userRepository.findOne({ where: { id } });
   }
   async updateAvatar(id: number, avatarBase64: string) {
-    const user = await this.userRepository.findOne({ where: { id } });
-    if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-
-    // Просто сохраняем Base64 строку - не нужно удалять старые файлы!
-    user.avatar = avatarBase64;
-    
-    return await this.userRepository.save(user);
+  console.log('Updating avatar for user:', id);
+  
+  const user = await this.userRepository.findOne({ where: { id } });
+  if (!user) {
+    console.error('User not found:', id);
+    throw new NotFoundException(`User with id ${id} not found`);
   }
+
+  console.log('Found user:', user.email);
+  console.log('Old avatar length:', user.avatar?.length);
+  
+  // Обновляем аватар
+  user.avatar = avatarBase64;
+  const savedUser = await this.userRepository.save(user);
+  
+  console.log('Avatar saved, new length:', savedUser.avatar?.length);
+  
+  return savedUser;
+}
 
   async findById(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
