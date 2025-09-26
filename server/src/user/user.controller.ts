@@ -14,6 +14,8 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { Express } from 'express';
 import { UserService } from './user.service';
@@ -46,28 +48,15 @@ export class UserController {
   }
 
   // user.controller.ts
+ 
   @Patch(':id/avatar')
-  @UseInterceptors(
-    FileInterceptor('avatar', {
-      storage: diskStorage({
-        destination: './uploads/avatars',
-        filename: (req, file, callback) => {
-          const uniqueSuffix =
-            Date.now() + '-' + Math.round(Math.random() * 1e9);
-          const ext = extname(file.originalname);
-          callback(null, `avatar-${uniqueSuffix}${ext}`);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(FileInterceptor('avatar'))
   async updateAvatar(
     @Param('id') id: number,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          // Временно уберем валидаторы для тестирования
-          // new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
-          // new FileTypeValidator({ fileType: 'image/(jpeg|png|jpg|gif|webp)' }),
+          // Можно оставить валидаторы если нужно
         ],
       }),
     )
@@ -80,15 +69,46 @@ export class UserController {
     console.log('File mimetype:', avatar.mimetype);
 
     try {
-      const avatarPath = `avatars/${avatar.filename}`;
-      const result = await this.userService.updateAvatar(id, avatarPath);
+      // Проверяем размер файла (максимум 2MB)
+      if (avatar.size > 2 * 1024 * 1024) {
+        throw new BadRequestException('File size too large. Maximum size is 2MB.');
+      }
+
+      // Проверяем тип файла
+      if (!avatar.mimetype.startsWith('image/')) {
+        throw new BadRequestException('Only image files are allowed.');
+      }
+
+      // Конвертируем файл в Base64
+      const base64String = avatar.buffer.toString('base64');
+      const avatarBase64 = `data:${avatar.mimetype};base64,${base64String}`;
+
+      // Сохраняем Base64 в базу данных
+      const result = await this.userService.updateAvatar(id, avatarBase64);
 
       console.log('=== AVATAR UPLOAD SUCCESS ===');
-      return result;
+      console.log('Base64 length:', avatarBase64.length);
+      
+      return {
+        success: true,
+        message: 'Avatar uploaded successfully',
+        avatar: result.avatar // Возвращаем обновленного пользователя
+      };
     } catch (error) {
       console.log('=== AVATAR UPLOAD ERROR ===');
       console.error(error);
       throw error;
     }
+  }
+
+  // Новый метод для получения аватарки
+  @Get(':id/avatar')
+  async getAvatar(@Param('id') id: number) {
+    const user = await this.userService.findById(id);
+    if (!user || !user.avatar) {
+      throw new NotFoundException('Avatar not found');
+    }
+    
+    return { avatar: user.avatar };
   }
 }

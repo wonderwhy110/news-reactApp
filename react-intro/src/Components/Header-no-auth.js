@@ -65,6 +65,12 @@ function HeaderNoAuth() {
   const userHandler = () => {
     navigate("/user");
   };
+  
+  const getAvatarUrl = (user) => {
+    сonsole.log("User avatar data:", post.user?.avatar);
+    return user?.avatar || avatar;
+  };
+  
 
   return (
     <>
@@ -91,13 +97,12 @@ function HeaderNoAuth() {
 
                 <img
                   className="avatar-post"
-                  src={
-                    user.avatar
-                      ? `${UPLOADS_BASE_URL}/${user.avatar}`
-                      : avatar
-                  }
+                  src={getAvatarUrl(user?.avatar, avatar)}
                   alt="Аватар"
                   onClick={userHandler}
+                  onError={(e) => {
+                    e.target.src = avatar;
+                  }}
                 />
               </>
             </div>

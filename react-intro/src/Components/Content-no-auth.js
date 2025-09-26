@@ -3,6 +3,11 @@ import { instance, instanceWithoutAuth } from "../api/axios.api";
 import avatar from "../assets/default-avatar.png";
 import { useAuth } from "../hooks/useAuth";
 
+const getAvatarUrl = (user) => {
+  сonsole.log("User avatar data:", post.user?.avatar);
+  return user?.avatar || avatar;
+};
+
 // Функция для декодирования JWT
 const decodeJWT = (token) => {
   try {
@@ -142,12 +147,11 @@ function ContentNoAuth() {
               <header className="card-title">
                 <img
                   className="avatar-post"
-                  src={
-                    post.user.avatar
-                      ? `${UPLOADS_BASE_URL}/${post.user.avatar}`
-                      : avatar
-                  }
+                  src={getAvatarUrl(post.user?.avatar, avatar)}
                   alt="Аватар"
+                  onError={(e) => {
+                    e.target.src = avatar;
+                  }}
                 />
                 <h1>{post.user?.name || "Неизвестный автор"}</h1>
               </header>

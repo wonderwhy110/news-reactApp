@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { instance } from "../api/axios.api";
 import avatar from "../assets/default-avatar.png"; // правильное написание
 
+const getAvatarUrl = (user) => {
+  сonsole.log("User avatar data:", post.user?.avatar);
+  return user?.avatar || avatar;
+};
+
 function ProfileEdit() {
   const UPLOADS_BASE_URL = process.env.REACT_APP_UPLOADS_BASE_URL;
   const [user, setUser] = useState({
@@ -166,13 +171,13 @@ function ProfileEdit() {
         <header className="card-title">
           <div className="avatar-container">
             <img
-              src={
-                user.avatar
-                  ? `${UPLOADS_BASE_URL}/${user.avatar}`
-                  : avatar
-              }
-              alt="Аватар"
               className="avatar"
+              src={getAvatarUrl(user?.avatar, avatar)}
+              alt="Аватар"
+              onClick={userHandler}
+              onError={(e) => {
+                e.target.src = avatar;
+              }}
             />
 
             <label htmlFor="avatar-upload" className="avatar-upload-label">

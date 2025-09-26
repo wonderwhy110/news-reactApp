@@ -43,39 +43,30 @@ export class UserService {
       },
     });
   }
+
+
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    await this.userRepository.update(id, updateUserDto);
+    return this.userRepository.findOne({ where: { id } });
+  }
+  async updateAvatar(id: number, avatarBase64: string) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    // Просто сохраняем Base64 строку - не нужно удалять старые файлы!
+    user.avatar = avatarBase64;
+    
+    return await this.userRepository.save(user);
+  }
+
   async findById(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
     return user;
-  }
-
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    await this.userRepository.update(id, updateUserDto);
-    return this.userRepository.findOne({ where: { id } });
-  }
-  async updateAvatar(id: number, avatarPath: string) {
-    const user = await this.userRepository.findOne({ where: { id } });
-    if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-
-    // Удаляем старый аватар если он существует
-    if (user.avatar) {
-      const oldAvatarPath = join(process.cwd(), 'uploads', user.avatar);
-      if (existsSync(oldAvatarPath)) {
-        try {
-          unlinkSync(oldAvatarPath);
-        } catch (error) {
-          console.error('Ошибка при удалении старого аватара:', error);
-        }
-      }
-    }
-
-    // Обновляем путь к аватару
-    user.avatar = avatarPath;
-    return await this.userRepository.save(user);
   }
 
   // Дополнительный метод для получения пути к аватару

@@ -22,8 +22,9 @@ export class User {
   @Column({ default: '' })
   name: string;
 
-  @Column({ default: '' })
-  avatar: string;
+  // Меняем тип на text для хранения Base64
+  @Column('text', { nullable: true })
+  avatar: string; // Теперь храним data:image/png;base64,iVBORw0KGgo...
 
   @Column({ default: '' })
   bio: string;
