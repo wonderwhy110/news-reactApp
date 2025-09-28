@@ -9,7 +9,7 @@ const getAvatarUrl = (user) => {
 
 function ProfileEdit() {
   const UPLOADS_BASE_URL = process.env.REACT_APP_UPLOADS_BASE_URL;
-  const API_BASE_URL = process.env.REACT_APP_API_URL
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
   const [user, setUser] = useState({
     name: "",
     avatar: "",
@@ -34,26 +34,6 @@ function ProfileEdit() {
     }
     return null;
   };
-
-  // Получаем данные пользователя
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userId = getUserIdFromToken();
-        if (userId) {
-          // Используем существующий endpoint /user/:id
-          const response = await instance.get(`/user/${userId}`);
-          setUser(response.data);
-        }
-      } catch (error) {
-        console.error("Ошибка загрузки пользователя:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
 
   // Сохранение изменений
   const handleSaveProfile = async () => {
@@ -105,61 +85,80 @@ function ProfileEdit() {
     }
   };
   // Загрузка аватара
-  
-const handleAvatarUpload = async (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
 
-  console.log("=== AVATAR UPLOAD DEBUG ===");
-  console.log("API_BASE_URL:", API_BASE_URL);
-  
-  const userId = getUserIdFromToken();
-  console.log("User ID from token:", userId);
+  const handleAvatarUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-  if (!userId) {
-    alert("Ошибка аутентификации");
-    return;
-  }
+    console.log("=== AVATAR UPLOAD DEBUG ===");
+    console.log("API_BASE_URL:", API_BASE_URL);
 
-  setUploading(true);
-  try {
-    const formData = new FormData();
-    formData.append("avatar", file);
+    const userId = getUserIdFromToken();
+    console.log("User ID from token:", userId);
 
-    // Используем прямой fetch вместо axios для теста
-    const response = await fetch(`${API_BASE_URL}/user/${userId}/avatar`, {
-      method: 'PATCH',
-      body: formData,
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-
-    console.log("Response status:", response.status);
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    if (!userId) {
+      alert("Ошибка аутентификации");
+      return;
     }
 
-    const result = await response.json();
-    console.log("✅ Успешный ответ:", result);
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("avatar", file);
 
-    // Проверяем структуру ответа
-    if (result.avatar) {
-      setUser((prev) => ({ ...prev, avatar: result.avatar }));
-      alert("Аватар успешно обновлен!");
-    } else {
-      console.warn("Аватар не пришел в ответе:", result);
+      // Используем прямой fetch вместо axios для теста
+      const response = await fetch(`${API_BASE_URL}/user/${userId}/avatar`, {
+        method: "PATCH",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const result = await response.json();
+      console.log("✅ Успешный ответ, avatar длина:", result.avatar.length);
+
+      // Логируем ДО обновления состояния
+      console.log("Текущий user до обновления:", {
+        id: user?.id,
+        hasAvatar: !!user?.avatar,
+      });
+
+      // Обновляем состояние
+      setUser((prev) => {
+        const updatedUser = { ...prev, avatar: result.avatar };
+        console.log("Обновленный user в setUser:", {
+          id: updatedUser.id,
+          avatarLength: updatedUser.avatar?.length,
+        });
+        return updatedUser;
+      });
+    } catch (error) {
+      console.error("❌ Ошибка загрузки:", error);
+      alert(`Ошибка при загрузке аватара: ${error.message}`);
+    } finally {
+      setUploading(false);
     }
+  };
+  // Получаем данные пользователя
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = getUserIdFromToken();
+        if (userId) {
+          // Используем существующий endpoint /user/:id
+          const response = await instance.get(`/user/${userId}`);
+          setUser(response.data);
+        }
+      } catch (error) {
+        console.error("Ошибка загрузки пользователя:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  } catch (error) {
-    console.error("❌ Ошибка загрузки:", error);
-    alert(`Ошибка при загрузке аватара: ${error.message}`);
-  } finally {
-    setUploading(false);
-  }
-};
+    fetchUserData();
+  }, []);
   if (loading) return <div>Загрузка...</div>;
 
   return (
@@ -168,12 +167,18 @@ const handleAvatarUpload = async (event) => {
         <header className="card-title">
           <div className="avatar-container">
             <img
-              className="avatar"
-              src={getAvatarUrl(user?.avatar, avatar)}
+              src={user?.avatar || avatar}
               alt="Аватар"
+              className="avatar"
               onError={(e) => {
+                console.error("❌ Ошибка загрузки аватарки в img теге");
+                console.error(
+                  "SRC содержимое:",
+                  user?.avatar?.substring(0, 100)
+                );
                 e.target.src = avatar;
               }}
+              onLoad={() => console.log("✅ Аватарка загружена в браузере")}
             />
 
             <label htmlFor="avatar-upload" className="avatar-upload-label">
