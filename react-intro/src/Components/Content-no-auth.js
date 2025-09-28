@@ -147,7 +147,7 @@ function ContentNoAuth() {
               <header className="card-title">
                 <img
                   className="avatar-post"
-                  src={getAvatarUrl(post.user?.avatar, avatar)}
+                           src={post.user?.avatar || avatar}
                   alt="Аватар"
                   onError={(e) => {
                     e.target.src = avatar;

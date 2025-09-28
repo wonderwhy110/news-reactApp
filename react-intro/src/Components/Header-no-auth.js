@@ -97,7 +97,7 @@ function HeaderNoAuth() {
 
                 <img
                   className="avatar-post"
-                  src={getAvatarUrl(user?.avatar, avatar)}
+                   src={user?.avatar || avatar}
                   alt="Аватар"
                   onClick={userHandler}
                   onError={(e) => {
