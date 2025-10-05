@@ -108,8 +108,8 @@ function HeaderNoAuth() {
             </div>
           ) : (
             <div className="right-group">
-              <Link to="/registration">Зарегистрироваться</Link>
-              <img className="reg-arrow" src={arrow} alt="reg" />
+              <Link to="/registration" className="desktop-only">Зарегистрироваться</Link>
+              <img  className="reg-arrow desktop-only" src={arrow} alt="reg" />
               <Link to="/login"> Войти</Link>
               <img className="reg-arrow" src={arrow} alt="reg" />
             </div>
