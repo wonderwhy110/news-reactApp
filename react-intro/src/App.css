@@ -8,8 +8,8 @@
 
 :root {
   --bg-neutral-1: rgba(36, 74, 127, 0.06);
-  --border-neutral-1: rgba(80, 80, 80);
-  --bg-focus-1: #bedee433;
+  --border-neutral-1: rgb(155, 155, 155);
+  --bg-focus-1: #a8b9bc33;
   --bg-active-1: rgba(77, 162, 179, 0.2);
   --text-primary: rgba(0, 0, 0, 0.75);
   --text-secondary: rgba(0, 0, 0, 0.54);

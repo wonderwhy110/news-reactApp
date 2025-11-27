@@ -199,7 +199,7 @@ function ProfileEdit() {
               <input
                 type="text"
                 value={user.name}
-                className="userName"
+                className="text-input medium userName"
                 onChange={(e) => setUser({ ...user, name: e.target.value })}
                 placeholder="Введите ваше имя"
               />

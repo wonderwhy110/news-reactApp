@@ -8,10 +8,16 @@ import { removeTokenFromLocalStorage } from "../helpers/localStorage.helper";
 import { toast } from "react-toastify";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "boxicons/css/boxicons.min.css";
 
 import { useNavigate } from "react-router-dom";
 import { instance } from "../api/axios.api";
-function HeaderNoAuth() {
+function HeaderNoAuth({
+  searchQuery,
+  onSearchChange,
+  onPerformSearch,
+  onReset,
+}) {
   const UPLOADS_BASE_URL = process.env.REACT_APP_UPLOADS_BASE_URL;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -37,24 +43,7 @@ function HeaderNoAuth() {
     }
     return null;
   };
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userId = getUserIdFromToken();
-        if (userId) {
-          // Используем существующий endpoint /user/:id
-          const response = await instance.get(`/user/${userId}`);
-          setUser(response.data);
-        }
-      } catch (error) {
-        console.error("Ошибка загрузки пользователя:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+ 
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -65,12 +54,24 @@ function HeaderNoAuth() {
   const userHandler = () => {
     navigate("/user");
   };
-  
+
   const getAvatarUrl = (user) => {
     //сonsole.log("User avatar data:", post.user?.avatar);
     return user?.avatar || avatar;
   };
-  
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      onPerformSearch(searchQuery);
+    }
+  };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      onPerformSearch(searchQuery);
+    }, 300); // ← ждем 300ms после последнего ввода
+
+    return () => clearTimeout(timeoutId); // ← очищаем предыдущий таймер
+  }, [searchQuery]);
 
   return (
     <>
@@ -78,14 +79,34 @@ function HeaderNoAuth() {
         <div className="logo-container">
           <div className="left-group">
             <Link to="/">
-              <img className="logo" src={logo} alt="logo" />
+              <i class="bx bx-globe bx-bounce" />
             </Link>
 
-            <input
-              type="text"
-              className="text-input medium"
-              placeholder="Поиск по News"
-            />
+            <div className="search-wrapper">
+              <input
+                type="text"
+                placeholder="Поиск по News"
+                className="text-input medium with-button"
+                value={searchQuery}
+                onChange={(e) => onSearchChange(e.target.value)}
+                onKeyPress={handleKeyPress}
+              />
+              <button className="reset-icon-button" onClick={() => onReset()}>
+                <i
+                  class="bx  bx-x"
+                  style={{ color: "rgba(0, 0, 0, 0.54)" }}
+                ></i>
+              </button>
+              <button
+                className="search-icon-button"
+                onClick={() => onPerformSearch(searchQuery)}
+              >
+                <i
+                  className="bx  bx-search "
+                  style={{ color: "rgba(0, 0, 0, 0.54)" }}
+                ></i>
+              </button>
+            </div>
           </div>
           {isAuth ? (
             <div className="right-group">
@@ -97,7 +118,7 @@ function HeaderNoAuth() {
 
                 <img
                   className="avatar-post"
-                   src={user?.avatar || avatar}
+                  src={user?.avatar || avatar}
                   alt="Аватар"
                   onClick={userHandler}
                   onError={(e) => {
@@ -108,8 +129,10 @@ function HeaderNoAuth() {
             </div>
           ) : (
             <div className="right-group">
-              <Link to="/registration" className="desktop-only">Зарегистрироваться</Link>
-              <img  className="reg-arrow desktop-only" src={arrow} alt="reg" />
+              <Link to="/registration" className="desktop-only">
+                Зарегистрироваться
+              </Link>
+              <img className="reg-arrow desktop-only" src={arrow} alt="reg" />
               <Link to="/login"> Войти</Link>
               <img className="reg-arrow" src={arrow} alt="reg" />
             </div>

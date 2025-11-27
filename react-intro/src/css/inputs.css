@@ -8,6 +8,7 @@
   background-color: var(--bg-neutral-1);
   color: var(--text-primary);
   border: thin solid transparent;
+  border-width: 2px;
   border-radius: var(--input-border-radius);
 
   &::placeholder {
@@ -38,7 +39,45 @@
 
   &:focus {
     outline: none;
-    background-color: var(--bg-focus-1);
-    border-color: var(--border-neutral-1);
+    background-color: var(--bg-accent-hover);
+    border-color: rgb(207, 159, 249);
   }
+  &:hover {
+    background-color: var(--bg-accent-hover);
+  }
+}
+
+.search-wrapper {
+  position: relative;
+  display: inline-block;
+  width:320px;
+}
+
+.search-wrapper input.with-button {
+  padding-right: 40px;
+  width:320px;
+}
+
+.search-icon-button {
+  position: absolute;
+  right: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 4px;
+}
+
+.reset-icon-button {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
 }

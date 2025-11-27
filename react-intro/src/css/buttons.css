@@ -29,7 +29,7 @@
   }
 
   &:disabled {
-    background-color: #ccc;
+    background-color: #dcdbdb;
   }
 
   &:not(:disabled) {

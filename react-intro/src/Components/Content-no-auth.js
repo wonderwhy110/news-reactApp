@@ -20,19 +20,16 @@ const decodeJWT = (token) => {
   }
 };
 
-function ContentNoAuth() {
+function ContentNoAuth({ posts , setPosts}) {
   const UPLOADS_BASE_URL = process.env.REACT_APP_UPLOADS_BASE_URL;
-  const [posts, setPosts] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [likingPosts, setLikingPosts] = useState(new Set());
   const { isAuth, user } = useAuth();
 
-  // Функция для получения ID пользователя
   const getUserId = () => {
     if (!user) return null;
-
-    // Если userId есть и он не undefined, используем его
     if (user.userId !== undefined && user.userId !== null) {
       return user.userId;
     }
@@ -55,6 +52,7 @@ function ContentNoAuth() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        
         const response = await instance.get("/post");
         setPosts(response.data);
       } catch (error) {
@@ -133,7 +131,7 @@ function ContentNoAuth() {
 
   if (loading) return <div className="content">Загрузка постов...</div>;
   if (error) return <div className="content">{error}</div>;
-  if (posts.length === 0) return <div className="content">Постов пока нет</div>;
+  if (posts?.length === 0) return <div className="content">Постов пока нет</div>;
 
   return (
     <section className="content">
@@ -155,7 +153,8 @@ function ContentNoAuth() {
                 />
                 <h1>{post.user?.name || "Неизвестный автор"}</h1>
               </header>
-              <p>{post.content}</p>
+              <p>{post.content}  </p>
+
 
               <footer className="card-footer">
                 <button
@@ -171,6 +170,7 @@ function ContentNoAuth() {
 
                 <button type="button" className="button secondary">
                   Комментарии {post.comments?.length || 0}
+                  
                 </button>
               </footer>
             </div>
