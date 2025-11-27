@@ -32,6 +32,7 @@ body {
   width: 824px;
   height: 100%;
   background-color: rgba(246, 247, 248, 1);
+  align-items: center;
 
   .text-input {
     max-width: 320px;
