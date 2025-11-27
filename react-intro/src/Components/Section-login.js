@@ -54,7 +54,7 @@ function SectionLogin() {
   };
 
   return (
-    <section className="content">
+    <section className="content-reg">
       <form
         className="login-dialog"
         onSubmit={loginHandler}
