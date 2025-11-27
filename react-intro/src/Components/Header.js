@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "../assets/earth.png";
 
 function Header() {
