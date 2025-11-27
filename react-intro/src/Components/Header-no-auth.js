@@ -43,7 +43,6 @@ function HeaderNoAuth({
     }
     return null;
   };
- 
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -66,6 +65,8 @@ function HeaderNoAuth({
   };
 
   useEffect(() => {
+    if (!onPerformSearch) return; // ← пропускаем если нет функции
+
     const timeoutId = setTimeout(() => {
       onPerformSearch(searchQuery);
     }, 300); // ← ждем 300ms после последнего ввода
