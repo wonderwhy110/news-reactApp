@@ -6,7 +6,9 @@ function Header() {
     <>
       <header className="header">
         <div className="logo-container">
-          <img className="logo" src={logo} alt="logo" />
+          <Link to="/">
+              <i class="bx bx-globe bx-bounce" />
+            </Link>
         </div>
       </header>
       <hr className="hr-line" />
