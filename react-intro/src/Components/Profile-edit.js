@@ -8,7 +8,6 @@ const getAvatarUrl = (user) => {
 };
 
 function ProfileEdit() {
-  const UPLOADS_BASE_URL = process.env.REACT_APP_UPLOADS_BASE_URL;
   const API_BASE_URL = process.env.REACT_APP_API_URL;
   const [user, setUser] = useState({
     name: "",
@@ -16,6 +15,14 @@ function ProfileEdit() {
     bio: "",
     email: "",
   });
+
+  useEffect(() => {
+    console.log("ENV переменные:", {
+      REACT_APP_API_URL: process.env.REACT_APP_API_URL,
+      API_BASE_URL: API_BASE_URL,
+    });
+  }, []);
+
   const [postContent, setPostContent] = useState(""); // State для текста поста
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false); // State для индикатора отправки
@@ -106,38 +113,45 @@ function ProfileEdit() {
       const formData = new FormData();
       formData.append("avatar", file);
 
-      // Используем прямой fetch вместо axios для теста
-      const response = await fetch(`${API_BASE_URL}/user/${userId}/avatar`, {
-        method: "PATCH",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      // ВАЖНО: instance УЖЕ содержит базовый URL
+      // Не добавляйте API_BASE_URL перед путем
+      const response = await instance.patch(
+        `/user/${userId}/avatar`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      const result = await response.json();
-      console.log("✅ Успешный ответ, avatar длина:", result.avatar.length);
+      console.log("✅ Ответ сервера:", response.data);
 
-      // Логируем ДО обновления состояния
-      console.log("Текущий user до обновления:", {
-        id: user?.id,
-        hasAvatar: !!user?.avatar,
-      });
+      if (response.data?.avatar) {
+        // Обновляем состояние
+        setUser((prev) => ({
+          ...prev,
+          avatar: response.data.avatar,
+        }));
+        alert("Аватар успешно обновлен!");
 
-      // Обновляем состояние
-      setUser((prev) => {
-        const updatedUser = { ...prev, avatar: result.avatar };
-        console.log("Обновленный user в setUser:", {
-          id: updatedUser.id,
-          avatarLength: updatedUser.avatar?.length,
-        });
-        return updatedUser;
-      });
+        window.location.reload();
+      }
     } catch (error) {
       console.error("❌ Ошибка загрузки:", error);
-      alert(`Ошибка при загрузке аватара: ${error.message}`);
+      console.error("URL запроса:", error.config?.url);
+      console.error("Статус:", error.response?.status);
+      console.error("Данные:", error.response?.data);
+
+      alert(
+        `Ошибка при загрузке аватара: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     } finally {
       setUploading(false);
+      // Очищаем input
+      event.target.value = "";
     }
   };
   // Получаем данные пользователя

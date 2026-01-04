@@ -1,33 +1,29 @@
-import logo from "../assets/earth.png";
-import arrow from "../assets/arrow-out.png";
-import avatar from "../assets/default-avatar.png";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useAppDispatch } from "../store/hooks";
 import { logout } from "../store/user/userSlice";
 import { removeTokenFromLocalStorage } from "../helpers/localStorage.helper";
 import { toast } from "react-toastify";
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { instance } from "../api/axios.api";
 import "boxicons/css/boxicons.min.css";
 
-import { useNavigate } from "react-router-dom";
-import { instance } from "../api/axios.api";
+// Импорты картинок
+import arrow from "../assets/arrow-out.png";
+import avatar from "../assets/default-avatar.png";
+
 function HeaderNoAuth({
   searchQuery,
   onSearchChange,
   onPerformSearch,
   onReset,
 }) {
-  const UPLOADS_BASE_URL = process.env.REACT_APP_UPLOADS_BASE_URL;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    name: "",
-    avatar: "",
-    bio: "",
-    email: "",
-  });
-
+  
+  // Простой state - только аватар
+  const [userAvatar, setUserAvatar] = useState("");
   const [loading, setLoading] = useState(true);
   const { isAuth } = useAuth();
 
@@ -48,31 +44,57 @@ function HeaderNoAuth({
     dispatch(logout());
     removeTokenFromLocalStorage("token");
     toast.success("Вы вышли из аккаунта.");
+    // Очищаем аватар при выходе
+    setUserAvatar("");
   };
 
   const userHandler = () => {
     navigate("/user");
   };
 
-  const getAvatarUrl = (user) => {
-    //сonsole.log("User avatar data:", post.user?.avatar);
-    return user?.avatar || avatar;
-  };
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       onPerformSearch(searchQuery);
     }
   };
 
+  // Загружаем только аватар
   useEffect(() => {
-    if (!onPerformSearch) return; // ← пропускаем если нет функции
+    const fetchUserAvatar = async () => {
+      if (!isAuth) {
+        setUserAvatar("");
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        const userId = getUserIdFromToken();
+        if (userId) {
+          const response = await instance.get(`/user/${userId}`);
+          // Сервер ВСЕГДА возвращает base64
+          setUserAvatar(response.data.avatar || "");
+        }
+      } catch (error) {
+        console.error("Ошибка загрузки аватара:", error);
+        setUserAvatar("");
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchUserAvatar();
+  }, [isAuth,setUserAvatar]);
+
+  // Для поиска (если нужен)
+  useEffect(() => {
+    if (!onPerformSearch) return;
     const timeoutId = setTimeout(() => {
       onPerformSearch(searchQuery);
-    }, 300); // ← ждем 300ms после последнего ввода
+    }, 300);
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, onPerformSearch]);
 
-    return () => clearTimeout(timeoutId); // ← очищаем предыдущий таймер
-  }, [searchQuery]);
+  // Простая проверка загрузки
 
   return (
     <>
@@ -80,7 +102,7 @@ function HeaderNoAuth({
         <div className="logo-container">
           <div className="left-group">
             <Link to="/">
-              <i class="bx bx-globe bx-bounce" />
+              <i className="bx bx-globe bx-bounce" />
             </Link>
 
             <div className="search-wrapper">
@@ -93,49 +115,44 @@ function HeaderNoAuth({
                 onKeyPress={handleKeyPress}
               />
               <button className="reset-icon-button" onClick={() => onReset()}>
-                <i
-                  class="bx  bx-x"
-                  style={{ color: "rgba(0, 0, 0, 0.54)" }}
-                ></i>
+                <i className="bx bx-x" style={{ color: "rgba(0, 0, 0, 0.54)" }} />
               </button>
               <button
                 className="search-icon-button"
                 onClick={() => onPerformSearch(searchQuery)}
               >
-                <i
-                  className="bx  bx-search "
-                  style={{ color: "rgba(0, 0, 0, 0.54)" }}
-                ></i>
+                <i className="bx bx-search" style={{ color: "rgba(0, 0, 0, 0.54)" }} />
               </button>
             </div>
           </div>
+
           {isAuth ? (
             <div className="right-group">
-              <>
-                <Link to="/" onClick={logoutHandler}>
-                  Выйти
-                </Link>
-                <img className="reg-arrow" src={arrow} alt="reg" />
-
-                <img
-                  className="avatar-post"
-                  src={user?.avatar || avatar}
-                  alt="Аватар"
-                  onClick={userHandler}
-                  onError={(e) => {
-                    e.target.src = avatar;
-                  }}
-                />
-              </>
+              <Link to="/" onClick={logoutHandler}>
+                Выйти
+              </Link>
+              <img className="reg-arrow" src={arrow} alt="Выйти" />
+              
+              {/* ПРОСТО: если есть base64 - показываем его, иначе дефолтный */}
+              <img
+                className="avatar-post"
+                src={userAvatar || avatar}
+                alt="Аватар"
+                onClick={userHandler}
+                onError={(e) => {
+                  console.log("Аватар не загрузился, показываем дефолтный");
+                  e.target.src = avatar;
+                }}
+              />
             </div>
           ) : (
             <div className="right-group">
               <Link to="/registration" className="desktop-only">
                 Зарегистрироваться
               </Link>
-              <img className="reg-arrow desktop-only" src={arrow} alt="reg" />
-              <Link to="/login"> Войти</Link>
-              <img className="reg-arrow" src={arrow} alt="reg" />
+              <img className="reg-arrow desktop-only" src={arrow} alt="Регистрация" />
+              <Link to="/login">Войти</Link>
+              <img className="reg-arrow" src={arrow} alt="Войти" />
             </div>
           )}
         </div>
