@@ -1,6 +1,7 @@
 {
   "name": "react-intro",
-  "homepage": "https://wonderwhy110.github.io/news-reactApp",
+  "homepage": "https://frontend-news1.netlify.app",
+ // "homepage": "https://wonderwhy110.github.io/news-reactApp",
   "proxy": "http://localhost:3000/api",
   "version": "0.1.0",
   "private": true,
