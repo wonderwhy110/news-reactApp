@@ -44,6 +44,7 @@ function SectionLogin() {
 
         toast.success("Вы вошли в аккаунт.");
         navigate("/");
+        window.location.reload()
       }
     } catch (err) {
       console.log("Login error:", err);

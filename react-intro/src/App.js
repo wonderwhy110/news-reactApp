@@ -15,6 +15,8 @@ import { getTokenFromLocalStorage } from "./helpers/localStorage.helper";
 import { AuthService } from "./services/auth.service";
 import { login, logout } from "./store/user/userSlice";
 import AuthInitializer from "./Components/AuthInitializer";
+import Comments from "./Pages/Comments";
+import SnowEffect from "./Components/SnowEffect";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -129,6 +131,7 @@ function App() {
     <div className="app">
       <Router>
         <AuthInitializer />
+           <SnowEffect />
         <Routes>
           {/* Главная страница (/) - с HeaderNoAuth и ContentNoAuth */}
           <Route
@@ -157,6 +160,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/user" element={<User />} />
           <Route path="/post" element={<ContentNoAuth />} />
+          <Route
+            path="/comments/:postId"
+            element={
+              <Comments
+              
+              />
+            }
+          />
         </Routes>
       </Router>
     </div>
