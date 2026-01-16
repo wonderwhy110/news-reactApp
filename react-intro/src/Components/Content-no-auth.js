@@ -73,8 +73,9 @@ function ContentNoAuth({ posts: initialPosts, setPosts, disabled }) {
 
   if (loading) return <div className="content">Загрузка постов...</div>;
   if (error) return <div className="content">{error}</div>;
-  if (posts?.length === 0)
-    return <div className="content">Постов пока нет</div>;
+if (!posts || !Array.isArray(posts) || posts.length === 0) {
+  return <div className="content">Постов пока нет</div>;
+}
 
   return (
     <section className="content">
