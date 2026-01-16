@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>News App</title>
+    <script>
+      // Перенаправление для HashRouter на GitHub Pages
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+
+      if (
+        path === "/news-reactApp/404.html" ||
+        path.includes("/news-reactApp/")
+      ) {
+        // Если мы на странице 404, перенаправляем на главную с хэшем
+        const redirectPath = window.location.href.includes("/news-reactApp/")
+          ? "/news-reactApp/#" + (hash || "/")
+          : "/news-reactApp/#/";
+
+        window.location.replace(redirectPath);
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <h1>Page Not Found</h1>
+      <p>
+        Please enable JavaScript or go to the
+        <a href="/news-reactApp/">home page</a>.
+      </p>
+    </noscript>
+    <p>Redirecting... <a href="/news-reactApp/">Click here</a></p>
+  </body>
+</html>
