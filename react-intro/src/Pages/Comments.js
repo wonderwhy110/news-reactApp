@@ -5,6 +5,7 @@ import SinglePost from "../Components/SinglePost";
 import { useEffect, useState } from "react";
 import { instance, instanceWithoutAuth } from "../api/axios.api";
 import HeaderNoAuth from "../Components/Header-no-auth";
+import HeaderWithoutSearch from "../Components/HeaderWithoutSearch";
 
 function Comments() {
   const { postId } = useParams();
@@ -43,7 +44,7 @@ function Comments() {
 
   return (
     <>
-      <HeaderNoAuth />
+      <HeaderWithoutSearch/>
       <div className="container">
         <SinglePost 
           post={post} 

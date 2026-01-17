@@ -48,6 +48,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
+  const [searchDone, setSearchDone] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
@@ -70,11 +71,29 @@ function App() {
       }
     }
   };
+  useEffect(() => {
+    const loadInitialPosts = async () => {
+      try {
+        setLoading(true);
+        const initialPosts = await fetchPosts(); // используем существующую функцию
+        setPosts(initialPosts);
+        setError(null);
+      } catch (error) {
+        console.error("Ошибка загрузки постов:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInitialPosts();
+  }, []);
 
   // Функция поиска
   const performSearch = async (query) => {
     console.log("🔍 === SEARCH DEBUG START ===");
     console.log("Search query:", query);
+    setSearchDone(false);
 
     try {
       let results;
@@ -91,6 +110,7 @@ function App() {
       console.log("Setting posts with:", results);
       setPosts(results);
       setLoading(false);
+      setSearchDone(true);
     } catch (error) {
       console.error("Search error:", error);
       setError(error.message);
@@ -110,6 +130,7 @@ function App() {
       setPosts(results);
       setLoading(false);
       setSearchQuery("");
+      setSearchDone(false);
     } catch (error) {
       console.error("Search error:", error);
       setError(error.message);
@@ -117,11 +138,16 @@ function App() {
       setLoading(false);
     }
   };
+    const handleSearchChange = (value) => {
+    setSearchQuery(value);
+    // Сбрасываем флаг поиска при изменении запроса
+    setSearchDone(false);
+  };
 
   const searchPosts = async (query) => {
     console.log("📡 Making API request to search...");
     const response = await instance.get(
-      `/post/search?q=${encodeURIComponent(query)}`
+      `/post/search?q=${encodeURIComponent(query)}`,
     );
     console.log("📡 API response:", response.data);
     return response.data;
@@ -131,7 +157,7 @@ function App() {
     <div className="app">
       <Router>
         <AuthInitializer />
-           <SnowEffect />
+        <SnowEffect />
         <Routes>
           {/* Главная страница (/) - с HeaderNoAuth и ContentNoAuth */}
           <Route
@@ -140,7 +166,7 @@ function App() {
               <>
                 <HeaderNoAuth
                   searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
+                  onSearchChange={handleSearchChange}
                   onPerformSearch={performSearch}
                   onReset={resetSearch}
                 />
@@ -148,8 +174,9 @@ function App() {
                   posts={posts}
                   setPosts={setPosts}
                   searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
-                  onPerformSearch={performSearch}
+                  isLoading ={loading}
+                
+                  searchDone={searchDone}
                 />
               </>
             }
@@ -160,14 +187,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/user" element={<User />} />
           <Route path="/post" element={<ContentNoAuth />} />
-          <Route
-            path="/comments/:postId"
-            element={
-              <Comments
-              
-              />
-            }
-          />
+          <Route path="/comments/:postId" element={<Comments />} />
         </Routes>
       </Router>
     </div>

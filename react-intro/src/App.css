@@ -6,6 +6,7 @@
 @import "css/profileEdit.css";
 @import "css/media.css";
 @import "css/comments.css";
+@import "css/sceleton.css";
 
 :root {
   --bg-neutral-1: rgba(36, 74, 127, 0.06);

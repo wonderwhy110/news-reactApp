@@ -1,89 +1,113 @@
-// ContentNoAuth.jsx
-import React, { useState, useEffect } from "react";
-import { instance, instanceWithoutAuth } from "../api/axios.api";
+// ContentNoAuth.jsx - УПРОЩЕННАЯ ВЕРСИЯ
+import React, { useEffect, useState } from "react";
 import avatar from "../assets/default-avatar.png";
-import { useLikes } from "../hooks/useLikes"; // Импортируем хук
+import { useLikes } from "../hooks/useLikes";
 import { Link } from "react-router-dom";
+import Spinner from "./Spinner";
 
-function ContentNoAuth({ posts: initialPosts, setPosts, disabled }) {
-  const UPLOADS_BASE_URL = process.env.REACT_APP_UPLOADS_BASE_URL;
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [posts, setLocalPosts] = useState(initialPosts || []);
+function ContentNoAuth({
+  posts, // ← посты передаются из App.js
+  disabled,
+  searchQuery,
+  searchDone,
+  isLoading=false,
+}) {
+  const { isPostLiked, getLikesCount, handleLike, isAuth, getUserId } =
+    useLikes();
+
+  const [localPosts, setLocalPosts] = useState(posts);
   const [likingPosts, setLikingPosts] = useState(new Set());
 
-  // Используем хук лайков
-  const { isPostLiked, getLikesCount, handleLike, isAuth } = useLikes();
-
+  // Синхронизируем посты при изменении пропса
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await instance.get("/post");
-        const fetchedPosts = response.data;
-        setLocalPosts(fetchedPosts);
-        if (setPosts) setPosts(fetchedPosts);
-      } catch (error) {
-        console.error("Ошибка загрузки постов с токеном:", error);
-        if (error.response?.status === 401) {
-          try {
-            const response = await instanceWithoutAuth.get("/post");
-            const fetchedPosts = response.data;
-            setLocalPosts(fetchedPosts);
-            if (setPosts) setPosts(fetchedPosts);
-          } catch (er) {
-            console.error("Ошибка загрузки постов без токена:", er);
-            setError("Не удалось загрузить посты");
-          }
-        } else {
-          setError("Не удалось загрузить посты");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+    setLocalPosts(posts);
+  }, [posts]);
 
-    fetchPosts();
-  }, []);
-
-  // Обработчик лайка для ContentNoAuth
+  // Обработчик лайка - ОПТИМИЗИРОВАННЫЙ ВАРИАНТ
   const handleLikeClick = async (postId) => {
     if (disabled) return;
 
-    setLikingPosts((prev) => new Set(prev).add(postId));
-
-    const post = posts.find((p) => (p.post_id || p.id) === postId);
-    const result = await handleLike(postId, post);
-
-    if (result.success) {
-      // Обновляем пост в списке
-      const updatedPosts = posts.map((p) =>
-        (p.post_id || p.id) === postId ? result.data : p
-      );
-
-      setLocalPosts(updatedPosts);
-      if (setPosts) setPosts(updatedPosts);
+    const userId = getUserId();
+    if (!userId) {
+      console.error("Не удалось получить ID пользователя");
+      return;
     }
 
-    setLikingPosts((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(postId);
-      return newSet;
-    });
-  };
+    setLikingPosts((prev) => new Set(prev).add(postId));
 
-  if (loading) return <div className="content">Загрузка постов...</div>;
-  if (error) return <div className="content">{error}</div>;
-if (!posts || !Array.isArray(posts) || posts.length === 0) {
-  return <div className="content">Постов пока нет</div>;
-}
+    try {
+      // Находим текущий пост
+      const postIndex = localPosts.findIndex(
+        (post) => post.post_id === postId || post.id === postId,
+      );
+
+      if (postIndex === -1) return;
+
+      const currentPost = localPosts[postIndex];
+      const wasLiked = isPostLiked(currentPost);
+
+      // Оптимистичное обновление UI
+      const updatedPosts = [...localPosts];
+      updatedPosts[postIndex] = {
+        ...currentPost,
+        likedByUserIds: wasLiked
+          ? (currentPost.likedByUserIds || []).filter((id) => id !== userId)
+          : [...(currentPost.likedByUserIds || []), userId],
+      };
+
+      setLocalPosts(updatedPosts);
+
+      // Выполняем запрос к API
+      const result = await handleLike(postId, currentPost);
+
+      if (!result.success) {
+        // Если запрос не удался - откатываем изменения
+        console.error("Ошибка лайка:", result.error);
+        setLocalPosts(posts); // Возвращаем исходные посты
+      }
+      // Если success - данные уже обновлены оптимистично
+    } catch (error) {
+      console.error("Ошибка лайка:", error);
+      setLocalPosts(posts); // Откат при ошибке
+    } finally {
+      setLikingPosts((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(postId);
+        return newSet;
+      });
+    }
+  };
+  if (isLoading) {
+    return (
+      <div className="content">
+        <Spinner size={20}  />
+      </div>
+    );
+  }
+  // Просто отображаем переданные посты
+  if (!localPosts || localPosts.length === 0) {
+    return (
+      <div className="content">
+        {searchDone
+          ? `По запросу "${searchQuery}" ничего не найдено`
+          : "Постов пока нет"}
+      </div>
+    );
+  }
 
   return (
     <section className="content">
-      {posts.map((post) => {
-        const postId = post.post_id || post.id;
+      {/* Информация о результатах поиска */}
+      {searchDone && (
+        <div className="search-results-info">
+          Найдено {localPosts.length} постов по запросу: "{searchQuery}"
+        </div>
+      )}
+
+      {localPosts.map((post) => {
+        const postId = post.post_id;
         const isLiked = isPostLiked(post);
         const likesCount = getLikesCount(post);
-        const isLiking = likingPosts.has(postId);
 
         return (
           <div key={postId} className="card">
@@ -99,6 +123,8 @@ if (!posts || !Array.isArray(posts) || posts.length === 0) {
               <h1>{post.user?.name || "Неизвестный автор"}</h1>
             </header>
 
+            {post.title && <h3 className="post-title">{post.title}</h3>}
+
             <p>{post.content}</p>
 
             <footer className="card-footer">
@@ -106,11 +132,10 @@ if (!posts || !Array.isArray(posts) || posts.length === 0) {
                 type="button"
                 className="button primary"
                 onClick={() => handleLikeClick(postId)}
-                disabled={isLiking || disabled}
+                disabled={disabled}
               >
                 <i className={`bx ${isLiked ? "bxs-heart" : "bx-heart"}`}></i>
                 <span className="like-count">{likesCount}</span>
-                {isLiking}
               </button>
 
               <Link to={`/comments/${postId}`}>

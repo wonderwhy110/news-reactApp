@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { instance } from "../api/axios.api";
 import avatar from "../assets/default-avatar.png"; // правильное написание
+import Spinner from "./Spinner";
 
 const getAvatarUrl = (user) => {
   //сonsole.log("User avatar data:", post.user?.avatar);
@@ -173,7 +174,7 @@ function ProfileEdit() {
 
     fetchUserData();
   }, []);
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) return <Spinner size={20}  />;
 
   return (
     <section className="content">

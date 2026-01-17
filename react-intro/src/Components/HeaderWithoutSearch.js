@@ -13,15 +13,12 @@ import "boxicons/css/boxicons.min.css";
 import arrow from "../assets/arrow-out.png";
 import avatar from "../assets/default-avatar.png";
 
-function HeaderNoAuth({
-  searchQuery,
-  onSearchChange,
-  onPerformSearch,
-  onReset,
+function HeaderWithoutSearch({
+
 }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  
   // Простой state - только аватар
   const [userAvatar, setUserAvatar] = useState("");
   const [loading, setLoading] = useState(true);
@@ -52,11 +49,6 @@ function HeaderNoAuth({
     navigate("/user");
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      onPerformSearch(searchQuery);
-    }
-  };
 
   // Загружаем только аватар
   useEffect(() => {
@@ -66,7 +58,7 @@ function HeaderNoAuth({
         setLoading(false);
         return;
       }
-
+      
       try {
         const userId = getUserIdFromToken();
         if (userId) {
@@ -83,47 +75,22 @@ function HeaderNoAuth({
     };
 
     fetchUserAvatar();
-  }, [isAuth, setUserAvatar]);
-  const handleLogoClick = (e) => {
-    navigate("/");
+  }, [isAuth,setUserAvatar]);
 
-    window.location.reload();
-  };
+
+
+  // Простая проверка загрузки
 
   return (
     <>
       <header className="header">
         <div className="logo-container">
           <div className="left-group">
-            <Link to="/" onClick={handleLogoClick}>
+            <Link to="/">
               <i className="bx bx-globe bx-bounce" />
             </Link>
 
-            <div className="search-wrapper">
-              <input
-                type="text"
-                placeholder="Поиск по Новостям"
-                className="text-input medium with-button"
-                value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                onKeyPress={handleKeyPress}
-              />
-              <button className="reset-icon-button" onClick={() => onReset()}>
-                <i
-                  className="bx bx-x"
-                  style={{ color: "rgba(0, 0, 0, 0.54)" }}
-                />
-              </button>
-              <button
-                className="search-icon-button"
-                onClick={() => onPerformSearch(searchQuery)}
-              >
-                <i
-                  className="bx bx-search"
-                  style={{ color: "rgba(0, 0, 0, 0.54)" }}
-                />
-              </button>
-            </div>
+            
           </div>
 
           {isAuth ? (
@@ -132,7 +99,7 @@ function HeaderNoAuth({
                 Выйти
               </Link>
               <img className="reg-arrow" src={arrow} alt="Выйти" />
-
+              
               {/* ПРОСТО: если есть base64 - показываем его, иначе дефолтный */}
               <img
                 className="avatar-post"
@@ -150,11 +117,7 @@ function HeaderNoAuth({
               <Link to="/registration" className="desktop-only">
                 Зарегистрироваться
               </Link>
-              <img
-                className="reg-arrow desktop-only"
-                src={arrow}
-                alt="Регистрация"
-              />
+              <img className="reg-arrow desktop-only" src={arrow} alt="Регистрация" />
               <Link to="/login">Войти</Link>
               <img className="reg-arrow" src={arrow} alt="Войти" />
             </div>
@@ -166,4 +129,4 @@ function HeaderNoAuth({
   );
 }
 
-export default HeaderNoAuth;
+export default HeaderWithoutSearch;

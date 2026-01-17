@@ -17,34 +17,36 @@ export function useLikes() {
       return user.userId;
     }
 
-    
+    if (user.id !== undefined && user.id !== null) {
+      return user.id;
+    }
 
+    // Пробуем декодировать из токена
     if (user.token) {
       try {
         const payload = user.token.split(".")[1];
         const decodedPayload = atob(payload);
         const decoded = JSON.parse(decodedPayload);
-        return  decoded.userId || decoded.sub;
+        return decoded.userId || decoded.sub || decoded.id;
       } catch (err) {
         console.error("Ошибка декодирования токена:", err);
       }
     }
 
-    console.error("Не удалось получить ID пользователя:", user);
+    console.error("Не удалось получить ID пользователя из объекта:", user);
     return null;
-  };
-
-  // Проверка, лайкнул ли пользователь пост
-  const isPostLiked = (post) => {
-    if (!post || !user) return false;
-    const userId = getUserId();
-    return userId && post.likedByUserIds?.includes(userId);
   };
 
   // Получение количества лайков
   const getLikesCount = (post) => {
     if (!post) return 0;
     return post.likedByUserIds?.length || 0;
+  };
+
+  const isPostLiked = (post) => {
+    if (!post || !user) return false;
+    const userId = getUserId();
+    return userId && post.likedByUserIds?.includes(userId);
   };
 
   // Основная функция для лайка/анлайка
@@ -113,6 +115,7 @@ export function useLikes() {
     isPostLiked,
     getLikesCount,
     handleLike,
+
 
     // Данные пользователя
     isAuth,
