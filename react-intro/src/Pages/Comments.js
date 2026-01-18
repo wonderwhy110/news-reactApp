@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { instance, instanceWithoutAuth } from "../api/axios.api";
 import HeaderNoAuth from "../Components/Header-no-auth";
 import HeaderWithoutSearch from "../Components/HeaderWithoutSearch";
+import Spinner from "../Components/Spinner";
 
 function Comments() {
   const { postId } = useParams();
@@ -39,7 +40,7 @@ function Comments() {
     }
   };
 
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) return <Spinner  />;
   if (!post) return <div>Пост не найден</div>;
 
   return (

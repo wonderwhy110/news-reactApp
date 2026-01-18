@@ -53,7 +53,7 @@ function ProfileEdit() {
         const updateData = {
           name: user.name,
           bio: user.bio,
-          avatar: user.avatar,
+
         };
 
         await instance.patch(`/user/${userId}`, updateData);
@@ -114,8 +114,7 @@ function ProfileEdit() {
       const formData = new FormData();
       formData.append("avatar", file);
 
-      // ВАЖНО: instance УЖЕ содержит базовый URL
-      // Не добавляйте API_BASE_URL перед путем
+      
       const response = await instance.patch(
         `/user/${userId}/avatar`,
         formData,

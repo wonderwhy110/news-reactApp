@@ -93,7 +93,12 @@ function App() {
   const performSearch = async (query) => {
     console.log("🔍 === SEARCH DEBUG START ===");
     console.log("Search query:", query);
-    setSearchDone(false);
+    if(!query || !query.trim()){
+      return
+    }
+
+      setSearchDone(false);
+    
 
     try {
       let results;
@@ -138,10 +143,12 @@ function App() {
       setLoading(false);
     }
   };
-    const handleSearchChange = (value) => {
-    setSearchQuery(value);
-    // Сбрасываем флаг поиска при изменении запроса
-    setSearchDone(false);
+  const handleSearchChange = (value) => {
+
+      setSearchQuery(value);
+      // Сбрасываем флаг поиска при изменении запроса
+      setSearchDone(false);
+    
   };
 
   const searchPosts = async (query) => {
@@ -174,8 +181,7 @@ function App() {
                   posts={posts}
                   setPosts={setPosts}
                   searchQuery={searchQuery}
-                  isLoading ={loading}
-                
+                  isLoading={loading}
                   searchDone={searchDone}
                 />
               </>

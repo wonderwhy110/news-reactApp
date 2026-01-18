@@ -108,12 +108,15 @@ function HeaderNoAuth({
                 onChange={(e) => onSearchChange(e.target.value)}
                 onKeyPress={handleKeyPress}
               />
-              <button className="reset-icon-button" onClick={() => onReset()}>
-                <i
-                  className="bx bx-x"
-                  style={{ color: "rgba(0, 0, 0, 0.54)" }}
-                />
-              </button>
+              {searchQuery && (
+                <button className="reset-icon-button" onClick={() => onReset()}>
+                  <i
+                    className="bx bx-x"
+                    style={{ color: "rgba(0, 0, 0, 0.54)" }}
+                  />
+                </button>
+              )}
+
               <button
                 className="search-icon-button"
                 onClick={() => onPerformSearch(searchQuery)}
@@ -128,12 +131,6 @@ function HeaderNoAuth({
 
           {isAuth ? (
             <div className="right-group">
-              <Link to="/" onClick={logoutHandler}>
-                Выйти
-              </Link>
-              <img className="reg-arrow" src={arrow} alt="Выйти" />
-
-              {/* ПРОСТО: если есть base64 - показываем его, иначе дефолтный */}
               <img
                 className="avatar-post"
                 src={userAvatar || avatar}
@@ -144,6 +141,11 @@ function HeaderNoAuth({
                   e.target.src = avatar;
                 }}
               />
+
+              <Link to="/" onClick={logoutHandler}>
+                Выйти
+              </Link>
+              <img className="reg-arrow" src={arrow} alt="Выйти" />
             </div>
           ) : (
             <div className="right-group">

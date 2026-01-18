@@ -90,7 +90,7 @@ function SectionLogin() {
             {" "}
             <button type="button" class="button secondary">
               {" "}
-              Зарегестрироваться
+              Зарегистрироваться
             </button>
           </Link>
           <button type="submit" class="button primary">
