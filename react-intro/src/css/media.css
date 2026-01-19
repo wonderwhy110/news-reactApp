@@ -81,6 +81,12 @@
 
       align-items: center !important;
 
+      
 }
+.name-edit-container {
+
+  justify-content: space-between;
+}
+
 
 }

@@ -22,18 +22,19 @@
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(188, 45, 255, 0.5);;
+  border: 3px solid rgba(188, 45, 255, 0.5);
 }
 .avatar-upload-label {
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  margin-top: 7px;
 }
 .avatar-container {
   display: flex;
   box-sizing: border-box;
-flex-direction: column;
+  flex-direction: column;
 }
 
 .form-group {
@@ -55,13 +56,10 @@ flex-direction: column;
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
-  
 }
 input.medium.userName {
-  
   font-weight: 550;
   font-size: 22px;
-
 }
 
 .form-group textarea {
@@ -102,12 +100,53 @@ input.medium.userName {
 .card.profile {
   display: flex;
   flex-direction: column;
+   box-shadow: none;
 }
 .text-input.large.post {
   min-width: 100px;
   height: 100px;
+ vertical-align: top;
+  resize: vertical;
+
 }
 
 .field-row.post {
   min-width: 100px;
 }
+
+.name-edit-container {
+  display: flex;
+  gap: 10px;
+}
+.edit-buttons{
+  display:flex;
+  gap: 5px;
+  flex-direction:column;
+  flex: 0 0 20px;
+
+}
+.name-edit-icon {
+  width: 22px;
+  height: 22px;
+}
+.button.small {
+  max-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.button.small.edit {
+  max-width:30px;
+}
+.bx.bxs-edit-alt{
+  color:#434343;
+}
+   h2 {
+      
+      font-family: "Neue Haas Unica W1G";
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 18px;
+      margin: 0;
+      margin-bottom: 20px;
+    }

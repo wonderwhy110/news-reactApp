@@ -23,12 +23,17 @@ function ProfileEdit() {
       API_BASE_URL: API_BASE_URL,
     });
   }, []);
+   const [tempName, setTempName] = useState(""); // ← временное имя для редактирования
+  const [isEditingName, setIsEditingName] = useState(false); // ← новое состояние
+   const [tempBio, setTempBio] = useState(""); // ← временное имя для редактирования
+  const [isEditingBio, setIsEditingBio] = useState(false); // ← новое состояние
 
   const [postContent, setPostContent] = useState(""); // State для текста поста
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false); // State для индикатора отправки
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+
   // Функция для получения ID из токена
   const getUserIdFromToken = () => {
     const token = localStorage.getItem("token");
@@ -53,7 +58,6 @@ function ProfileEdit() {
         const updateData = {
           name: user.name,
           bio: user.bio,
-
         };
 
         await instance.patch(`/user/${userId}`, updateData);
@@ -94,6 +98,66 @@ function ProfileEdit() {
   };
   // Загрузка аватара
 
+   const handleBioChange = async () => {
+  try {
+    const userId = getUserIdFromToken();
+    if (userId && tempBio.trim()) {
+      const updateData = {
+        bio: tempBio.trim(),
+      };
+
+      await instance.patch(`/user/${userId}`, updateData);
+      
+      // Обновляем состояние пользователя
+      setUser(prev => ({ ...prev, bio: tempBio.trim() }));
+      alert("успешно обновлено!");
+      setIsEditingBio(false); // ← выходим из режима редактирования
+    }
+  } catch (error) {
+    console.error("Ошибка сохранения описания:", error);
+    alert("Ошибка при сохранении описания");
+  }
+};
+const cancelBioEdit = () => {
+  setIsEditingBio(false);
+  setTempBio(user.bio); // восстанавливаем оригинальное имя
+};
+
+const startBioEditing = () => {
+  setIsEditingBio(true);
+  setTempBio(user.bio); // сохраняем текущее имя во временное состояние
+};
+
+
+  const handleNameChange = async () => {
+  try {
+    const userId = getUserIdFromToken();
+    if (userId && tempName.trim()) {
+      const updateData = {
+        name: tempName.trim(),
+      };
+
+      await instance.patch(`/user/${userId}`, updateData);
+      
+      // Обновляем состояние пользователя
+      setUser(prev => ({ ...prev, name: tempName.trim() }));
+      alert("Имя успешно обновлено!");
+      setIsEditingName(false); // ← выходим из режима редактирования
+    }
+  } catch (error) {
+    console.error("Ошибка сохранения имени:", error);
+    alert("Ошибка при сохранении имени");
+  }
+};
+const cancelNameEdit = () => {
+  setIsEditingName(false);
+  setTempName(user.name); // восстанавливаем оригинальное имя
+};
+
+const startNameEditing = () => {
+  setIsEditingName(true);
+  setTempName(user.name); // сохраняем текущее имя во временное состояние
+};
   const handleAvatarUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -114,7 +178,6 @@ function ProfileEdit() {
       const formData = new FormData();
       formData.append("avatar", file);
 
-      
       const response = await instance.patch(
         `/user/${userId}/avatar`,
         formData,
@@ -122,7 +185,7 @@ function ProfileEdit() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       console.log("✅ Ответ сервера:", response.data);
@@ -146,7 +209,7 @@ function ProfileEdit() {
       alert(
         `Ошибка при загрузке аватара: ${
           error.response?.data?.message || error.message
-        }`
+        }`,
       );
     } finally {
       setUploading(false);
@@ -173,10 +236,10 @@ function ProfileEdit() {
 
     fetchUserData();
   }, []);
-  if (loading) return <Spinner size={20}  />;
+  if (loading) return <Spinner size={20} />;
 
   return (
-    <section className="content">
+    <section className="content edit">
       <div className="card profile">
         <header className="card-title">
           <div className="avatar-container">
@@ -188,7 +251,7 @@ function ProfileEdit() {
                 console.error("❌ Ошибка загрузки аватарки в img теге");
                 console.error(
                   "SRC содержимое:",
-                  user?.avatar?.substring(0, 100)
+                  user?.avatar?.substring(0, 100),
                 );
                 e.target.src = avatar;
               }}
@@ -196,7 +259,7 @@ function ProfileEdit() {
             />
 
             <label htmlFor="avatar-upload" className="avatar-upload-label">
-              {uploading ? "⏳" : "✎"}
+              <i className="bx bxs-edit-alt"></i>
               <input
                 id="avatar-upload"
                 type="file"
@@ -210,39 +273,131 @@ function ProfileEdit() {
 
           <div className="right-groop">
             <div className="form-group">
-              <input
-                type="text"
-                value={user.name}
-                className="text-input medium userName"
-                onChange={(e) => setUser({ ...user, name: e.target.value })}
-                placeholder="Введите ваше имя"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>О себе:</label>
-              <textarea
-                value={user.bio}
-                onChange={(e) => setUser({ ...user, bio: e.target.value })}
-                placeholder="Расскажите о себе"
-                className="text-input large post"
-                rows="4"
-              />
-            </div>
-          </div>
-        </header>
-
-        {/* Кнопка сохранения профиля */}
-        <div className="form-group">
+              {isEditingName ? (
+      <div className="name-edit-container">
+        <input
+          type="text"
+          value={tempName}
+          className="text-input medium userName"
+          onChange={(e) => setTempName(e.target.value)}
+          placeholder="Введите ваше имя"
+          autoFocus // автоматический фокус на поле
+          onKeyDown={(e) => {
+            // Сохраняем по нажатию Enter
+            if (e.key === 'Enter') {
+              handleNameChange();
+            }
+            // Отменяем по Escape
+            if (e.key === 'Escape') {
+              cancelNameEdit();
+            }
+          }}
+        />
+        
           <button
             type="button"
-            onClick={handleSaveProfile}
-            className="button primary"
-            disabled={saving}
+            onClick={handleNameChange}
+            className="button small success"
+            disabled={!tempName.trim()}
           >
-            {saving ? "Сохранение..." : "Сохранить профиль"}
+            ✓
+          </button>
+          <button
+            type="button"
+            onClick={cancelNameEdit}
+            className="button small cancel"
+          >
+            ✕
           </button>
         </div>
+ 
+    ) : (
+      /* Режим просмотра */
+      <div className="name-edit-container">
+        <h1>{user.name || "Без имени"}</h1>
+        <button
+          type="button"
+          onClick={startNameEditing}
+          className="button small edit"
+          title="Изменить имя"
+        >
+          <i className="bx bxs-edit-alt"></i>
+        </button>
+      </div>
+    )}
+  </div>
+   <h2>О себе:</h2>
+
+
+            <div className="form-group">
+               {isEditingBio ? (
+              <div className="name-edit-container">
+        <textarea
+         
+          value={tempBio}
+          className="text-input large post"
+          onChange={(e) => setTempBio(e.target.value)}
+          placeholder="Расскажите о себе"
+           rows="4"
+          autoFocus // автоматический фокус на поле
+          onKeyDown={(e) => {
+            // Сохраняем по нажатию Enter
+            if (e.key === 'Enter') {
+              handleBioChange();
+            }
+            // Отменяем по Escape
+            if (e.key === 'Escape') {
+              cancelBioEdit();
+            }
+          }}
+        />
+         <div className="edit-buttons">
+         
+         <button
+            type="button"
+            onClick={handleBioChange}
+            className="button small success"
+            disabled={!tempBio.trim()}
+          >
+            ✓
+          </button>
+          <button
+            type="button"
+            onClick={cancelBioEdit}
+            className="button small cancel"
+          >
+            ✕
+          </button>
+        </div>
+           </div>
+ 
+    ) : (
+      /* Режим просмотра */
+      <div className="name-edit-container">
+       
+ 
+         <div className="text-input large post">{user.bio || "Раскажите о себе"} </div>
+        
+        <button
+          type="button"
+          onClick={startBioEditing}
+          className="button small edit"
+       
+        >
+          <i className="bx bxs-edit-alt"></i>
+        </button>
+      </div>
+    )}
+  </div>
+
+                    
+
+
+          </div>
+        </header>
+        
+
+      
 
         <div className="form-group">
           <label>Email:</label>
