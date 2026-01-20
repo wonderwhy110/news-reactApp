@@ -5,15 +5,15 @@ import { useLikes } from "../hooks/useLikes"; // Импортируем хук
 import { instance } from "../api/axios.api";
 import { useSelector } from "react-redux";
 import ConfirmModal from "./ConfirmModal";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function SinglePost({ post, onPostUpdated, disabled = false }) {
   const [localPost, setLocalPost] = useState(post);
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
-  
-const userState = useSelector(state => state.user);
-const userId = userState?.user?.userId;
+
+  const userState = useSelector((state) => state.user);
+  const userId = userState?.user?.userId || null;
 
   // Используем хук лайков
   const {
@@ -51,22 +51,22 @@ const userId = userState?.user?.userId;
       alert("Комментарий не может быть пустым!");
       return;
     }
-    const token = localStorage.getItem('token');
-  
-  // Проверка авторизации
-  if (!token) {
-    alert("Вы не авторизованы! Пожалуйста, войдите в систему.");
-    // Можно перенаправить на страницу логина
-     navigate('/registration');
-    return;
-  }
+    const token = localStorage.getItem("token");
+
+    // Проверка авторизации
+    if (!token) {
+      alert("Вы не авторизованы! Пожалуйста, войдите в систему.");
+      // Можно перенаправить на страницу логина
+      navigate("/registration");
+      return;
+    }
 
     const postId = localPost.post_id;
     try {
       const response = await instance.post(`/post/${postId}/comments`, {
         content: commentContent,
       });
-      setComments(prev => [...prev, response.data]);
+      setComments((prev) => [...prev, response.data]);
       setCommentContent("");
       console.log("Комментарий оставлен!", response.data);
     } catch (er) {
@@ -76,12 +76,9 @@ const userId = userState?.user?.userId;
   };
   const postId = localPost.post_id;
   useEffect(() => {
-    
     const fetchComments = async () => {
       try {
-        const response = await instance.get(
-          `/post/${postId}/comments`,
-        );
+        const response = await instance.get(`/post/${postId}/comments`);
         setComments(response.data);
       } catch (error) {
         console.error("Ошибка загрузки комментариев:", error);
@@ -92,32 +89,29 @@ const userId = userState?.user?.userId;
   }, [postId]);
 
   const handleDeleteComment = async (commentId) => {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+
     try {
-      await instance.delete(
-        `/post/comments/${commentId}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
-      
+      await instance.delete(`/post/comments/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       // Удаляем комментарий из состояния
-      setComments(prev => 
-        prev.filter(comment => comment.id !== commentId)
-      );
-      
-      console.log('Комментарий удален');
-      
+      setComments((prev) => prev.filter((comment) => comment.id !== commentId));
+
+      console.log("Комментарий удален");
     } catch (error) {
-      console.error('Ошибка при удалении:', error);
-      alert(error.response?.data?.message || 'Ошибка при удалении');
+      console.error("Ошибка при удалении:", error);
+      alert(error.response?.data?.message || "Ошибка при удалении");
     }
   };
 
-  const [deleteModal, setDeleteModal] = useState({ isOpen: false, commentId: null });
+  const [deleteModal, setDeleteModal] = useState({
+    isOpen: false,
+    commentId: null,
+  });
 
   const openDeleteModal = (commentId) => {
     setDeleteModal({ isOpen: true, commentId });
@@ -129,7 +123,6 @@ const userId = userState?.user?.userId;
       setDeleteModal({ isOpen: false, commentId: null });
     }
   };
-
 
   if (!localPost) {
     return <div className="content">Пост не найден</div>;
@@ -175,6 +168,12 @@ const userId = userState?.user?.userId;
         </div>
         {comments &&
           comments.map((comment) => {
+            const isAuthor =
+              userId !== null &&
+              userId !== undefined &&
+              comment.userId &&
+              parseInt(comment.userId) === parseInt(userId);
+
             return (
               <div key={comment.id} className="card comment">
                 <header className="card-title">
@@ -191,14 +190,14 @@ const userId = userState?.user?.userId;
 
                 <p>{comment.content}</p>
                 {/* Кнопка удаления (показываем только автору) */}
-            {comment.userId == parseInt(userId)  && (
-              <button 
-                onClick={() => openDeleteModal(comment.id)}
-                className="delete-btn"
-              >
-                Удалить
-              </button>
-            )}
+                {isAuthor && (
+                  <button
+                    onClick={() => openDeleteModal(comment.id)}
+                    className="delete-btn"
+                  >
+                    Удалить
+                  </button>
+                )}
               </div>
             );
           })}
@@ -219,7 +218,6 @@ const userId = userState?.user?.userId;
         </button>
       </section>
 
-      
       <ConfirmModal
         isOpen={deleteModal.isOpen}
         onClose={() => setDeleteModal({ isOpen: false, commentId: null })}
