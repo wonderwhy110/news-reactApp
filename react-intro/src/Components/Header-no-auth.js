@@ -132,7 +132,7 @@ function HeaderNoAuth({
           {isAuth ? (
             <div className="right-group">
               <img
-                className="avatar-post"
+                className="avatar-post head"
                 src={userAvatar || avatar}
                 alt="Аватар"
                 onClick={userHandler}
@@ -142,23 +142,41 @@ function HeaderNoAuth({
                 }}
               />
 
-              <Link to="/" onClick={logoutHandler}>
+              <Link
+                to="/"
+                onClick={logoutHandler}
+                className="reg-wrap "
+              >
                 Выйти
+                <img
+                  className="reg-arrow"
+                  onClick={logoutHandler}
+                  src={arrow}
+                  alt="Выйти"
+                />
               </Link>
-              <img className="reg-arrow" src={arrow} alt="Выйти" />
             </div>
           ) : (
             <div className="right-group">
-              <Link to="/registration" className="desktop-only">
+              <Link to="/registration" className="reg-wrap desktop-only">
                 Зарегистрироваться
+                <img
+                  className="reg-arrow"
+                  src={arrow}
+                  alt=""
+                  aria-hidden="true"
+                />
               </Link>
-              <img
-                className="reg-arrow desktop-only"
-                src={arrow}
-                alt="Регистрация"
-              />
-              <Link to="/login">Войти</Link>
-              <img className="reg-arrow" src={arrow} alt="Войти" />
+
+              <Link to="/login" className="reg-wrap">
+                Войти
+                <img
+                  className="reg-arrow"
+                  src={arrow}
+                  alt=""
+                  aria-hidden="true"
+                />
+              </Link>
             </div>
           )}
         </div>

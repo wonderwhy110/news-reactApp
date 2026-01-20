@@ -13,12 +13,10 @@ import "boxicons/css/boxicons.min.css";
 import arrow from "../assets/arrow-out.png";
 import avatar from "../assets/default-avatar.png";
 
-function HeaderWithoutSearch({
-
-}) {
+function HeaderWithoutSearch({}) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
+
   // Простой state - только аватар
   const [userAvatar, setUserAvatar] = useState("");
   const [loading, setLoading] = useState(true);
@@ -49,7 +47,6 @@ function HeaderWithoutSearch({
     navigate("/user");
   };
 
-
   // Загружаем только аватар
   useEffect(() => {
     const fetchUserAvatar = async () => {
@@ -58,7 +55,7 @@ function HeaderWithoutSearch({
         setLoading(false);
         return;
       }
-      
+
       try {
         const userId = getUserIdFromToken();
         if (userId) {
@@ -75,9 +72,7 @@ function HeaderWithoutSearch({
     };
 
     fetchUserAvatar();
-  }, [isAuth,setUserAvatar]);
-
-
+  }, [isAuth, setUserAvatar]);
 
   // Простая проверка загрузки
 
@@ -89,20 +84,13 @@ function HeaderWithoutSearch({
             <Link to="/">
               <i className="bx bx-globe bx-bounce" />
             </Link>
-
-            
           </div>
 
           {isAuth ? (
             <div className="right-group">
-              <Link to="/" onClick={logoutHandler}>
-                Выйти
-              </Link>
-              <img className="reg-arrow" src={arrow} alt="Выйти" />
-              
-              {/* ПРОСТО: если есть base64 - показываем его, иначе дефолтный */}
+             
               <img
-                className="avatar-post"
+                className="avatar-post head"
                 src={userAvatar || avatar}
                 alt="Аватар"
                 onClick={userHandler}
@@ -111,15 +99,41 @@ function HeaderWithoutSearch({
                   e.target.src = avatar;
                 }}
               />
+              <Link
+                to="/"
+                onClick={logoutHandler}
+                className="reg-wrap"
+              >
+                Выйти
+                <img
+                  className="reg-arrow"
+                  onClick={logoutHandler}
+                  src={arrow}
+                  alt="Выйти"
+                />
+              </Link>
             </div>
           ) : (
             <div className="right-group">
-              <Link to="/registration" className="desktop-only">
+              <Link to="/registration" className="reg-wrap desktop-only">
                 Зарегистрироваться
+                <img
+                  className="reg-arrow"
+                  src={arrow}
+                  alt=""
+                  aria-hidden="true"
+                />
               </Link>
-              <img className="reg-arrow desktop-only" src={arrow} alt="Регистрация" />
-              <Link to="/login">Войти</Link>
-              <img className="reg-arrow" src={arrow} alt="Войти" />
+
+              <Link to="/login" className="reg-wrap">
+                Войти
+                <img
+                  className="reg-arrow"
+                  src={arrow}
+                  alt=""
+                  aria-hidden="true"
+                />
+              </Link>
             </div>
           )}
         </div>
