@@ -154,7 +154,7 @@ function App() {
   const searchPosts = async (query) => {
     console.log("📡 Making API request to search...");
     const response = await instance.get(
-      `/post/search?q=${encodeURIComponent(query)}`,
+      `/post/search?q=${encodeURIComponent(query.toLowerCase())}`,
     );
     console.log("📡 API response:", response.data);
     return response.data;

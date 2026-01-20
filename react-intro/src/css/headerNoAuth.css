@@ -59,7 +59,7 @@
 }
 
 .bx.bx-globe:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
   box-shadow: 0 0 15px 3px var(--bg-accent-1);
 }
 .avatar-post.head {
@@ -68,6 +68,6 @@
     box-shadow 0.3s ease;
 }
 .avatar-post.head:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
   box-shadow: 0 0 15px 3px var(--bg-accent-1);
 }

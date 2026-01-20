@@ -5,13 +5,15 @@ import { useLikes } from "../hooks/useLikes"; // Импортируем хук
 import { instance } from "../api/axios.api";
 import { useSelector } from "react-redux";
 import ConfirmModal from "./ConfirmModal";
+import {  useNavigate } from "react-router-dom";
 
 function SinglePost({ post, onPostUpdated, disabled = false }) {
   const [localPost, setLocalPost] = useState(post);
   const [commentContent, setCommentContent] = useState("");
-  const [comments, setComments] = useState("");
+  const [comments, setComments] = useState([]);
   
-  const { userId } = useSelector(state => state.user.user);
+const userState = useSelector(state => state.user);
+const userId = userState?.user?.userId;
 
   // Используем хук лайков
   const {
@@ -21,7 +23,7 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
     loading: likeLoading,
     isAuth,
   } = useLikes();
-
+  const navigate = useNavigate();
   // Обработчик лайка
   const handleLikeClick = async () => {
     if (disabled) return;
@@ -49,6 +51,16 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
       alert("Комментарий не может быть пустым!");
       return;
     }
+    const token = localStorage.getItem('token');
+  
+  // Проверка авторизации
+  if (!token) {
+    alert("Вы не авторизованы! Пожалуйста, войдите в систему.");
+    // Можно перенаправить на страницу логина
+     navigate('/registration');
+    return;
+  }
+
     const postId = localPost.post_id;
     try {
       const response = await instance.post(`/post/${postId}/comments`, {
