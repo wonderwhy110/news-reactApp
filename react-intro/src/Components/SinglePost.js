@@ -6,6 +6,7 @@ import { instance } from "../api/axios.api";
 import { useSelector } from "react-redux";
 import ConfirmModal from "./ConfirmModal";
 import { useNavigate } from "react-router-dom";
+import { timeAgo } from "./Time";
 
 function SinglePost({ post, onPostUpdated, disabled = false }) {
   const [localPost, setLocalPost] = useState(post);
@@ -42,7 +43,12 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
         onPostUpdated(result.data);
       }
     } else if (result.error) {
-      alert(result.error);
+      console.log(result.error);
+    }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/registration");
+      return;
     }
   };
   const handleSubmitComment = async (e) => {
@@ -145,6 +151,10 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
               }}
             />
             <h1>{localPost.user?.name || "Неизвестный автор"}</h1>
+            <small className="time">
+              {timeAgo(localPost.createdAt)} {/* "3 часа назад" */}
+              {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
+            </small>
           </header>
 
           <p>{localPost.content}</p>
@@ -186,16 +196,21 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
                     }}
                   />
                   <h1>{comment.user?.name || "Неизвестный автор"}</h1>
+                  <small className="time">
+                    {timeAgo(comment.createdAt)} {/* "3 часа назад" */}
+                    {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
+                  </small>
                 </header>
 
-                <p>{comment.content}</p>
+                <p className="comment-content">{comment.content}</p>
+
                 {/* Кнопка удаления (показываем только автору) */}
                 {isAuthor && (
                   <button
                     onClick={() => openDeleteModal(comment.id)}
                     className="delete-btn"
                   >
-                    Удалить
+                    <i class="bx  bx-trash"></i>
                   </button>
                 )}
               </div>

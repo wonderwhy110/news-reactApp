@@ -4,13 +4,14 @@ import avatar from "../assets/default-avatar.png";
 import { useLikes } from "../hooks/useLikes";
 import { Link } from "react-router-dom";
 import Spinner from "./Spinner";
+import { timeAgo } from "./Time";
 
 function ContentNoAuth({
   posts, // ← посты передаются из App.js
   disabled,
   searchQuery,
   searchDone,
-  isLoading=false,
+  isLoading = false,
 }) {
   const { isPostLiked, getLikesCount, handleLike, isAuth, getUserId } =
     useLikes();
@@ -26,6 +27,11 @@ function ContentNoAuth({
   // Обработчик лайка - ОПТИМИЗИРОВАННЫЙ ВАРИАНТ
   const handleLikeClick = async (postId) => {
     if (disabled) return;
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Вы не авторизованы! Пожалуйста, войдите в систему.")
+      return;
+    }
 
     const userId = getUserId();
     if (!userId) {
@@ -80,7 +86,7 @@ function ContentNoAuth({
   if (isLoading) {
     return (
       <div className="content">
-        <Spinner size={20}  />
+        <Spinner size={20} />
       </div>
     );
   }
@@ -121,6 +127,10 @@ function ContentNoAuth({
                 }}
               />
               <h1>{post.user?.name || "Неизвестный автор"}</h1>
+                  <small className="time">
+                                  {timeAgo(post.createdAt)} {/* "3 часа назад" */}
+                                  {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
+                                </small>
             </header>
 
             {post.title && <h3 className="post-title">{post.title}</h3>}

@@ -7,10 +7,10 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
         <h3>{title || 'Подтверждение'}</h3>
         <p>{message || 'Вы уверены?'}</p>
         <div className="modal-actions">
-          <button onClick={onClose} className="btn-secondary">
+          <button onClick={onClose} className="button secondary">
             Отмена
           </button>
-          <button onClick={onConfirm} className="btn-danger">
+          <button onClick={onConfirm} className="delete-btn">
             Удалить
           </button>
         </div>
