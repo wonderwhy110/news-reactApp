@@ -43,38 +43,37 @@ function Section() {
         toast.success("Вы зарегистрировались.");
 
         // 2. Автоматический вход после успешной регистрации
-         try {
-      
-              const data = await AuthService.login({ email, password });
-        
-              if (data) {
-                setTokenToLocalStorage("token", data.token);
-        
-                // Сохраняем пользователя в localStorage
-                localStorage.setItem(
-                  "user",
-                  JSON.stringify({
-                    userId: data.userId,
-                    email: data.email,
-                  })
-                );
-        
-                dispatch(
-                  login({
-                    userId: data.userId,
-                    email: data.email,
-                    token: data.token,
-                    avatar: data.avatar,
-                  })
-                );
-        
-                toast.success("Вы вошли в аккаунт.");
-                navigate("/");
-              }
+        try {
+          const data = await AuthService.login({ email, password });
+
+          if (data) {
+            setTokenToLocalStorage("token", data.token);
+
+            // Сохраняем пользователя в localStorage
+            localStorage.setItem(
+              "user",
+              JSON.stringify({
+                userId: data.userId,
+                email: data.email,
+              }),
+            );
+
+            dispatch(
+              login({
+                userId: data.userId,
+                email: data.email,
+                token: data.token,
+                avatar: data.avatar,
+              }),
+            );
+
+            toast.success("Вы вошли в аккаунт.");
+            navigate("/");
+          }
         } catch (loginError) {
           toast.error(
             "Ошибка автоматического входа: " +
-              loginError.response?.data?.message
+              loginError.response?.data?.message,
           );
         }
       }
@@ -100,7 +99,13 @@ function Section() {
         <form
           className="login-dialog"
           onSubmit={regHandler}
-          style={{ display: submitted ? "none" : "" }}
+          style={{
+            display: submitted ? "none" : "",
+            backgroundColor: " var(--bg-card)",
+
+            boxShadow: " box-shadow: 0 6px 34px rgba(0, 0, 0, 0.12)",
+            color: "var(--text-primary)",
+          }}
         >
           <header className="login-title">Регистрация</header>
 

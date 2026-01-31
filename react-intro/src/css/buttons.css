@@ -29,7 +29,8 @@
   }
 
   &:disabled {
-    background-color: #dcdbdb;
+    background-color:var(--disabled-button-2) ;
+    color: var(--text-primary);
   }
 
   &:not(:disabled) {

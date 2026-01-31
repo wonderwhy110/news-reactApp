@@ -1,0 +1,162 @@
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background-color: var(--bg-neutral-1);
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--hover-bg);
+  transform: translateY(-2px);
+}
+
+.theme-toggle__track {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background: var(--bg-primary);
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--bg-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.theme-toggle__track.light .theme-toggle__thumb {
+  transform: translateX(0);
+}
+
+.theme-toggle__track.dark .theme-toggle__thumb {
+  transform: translateX(30px);
+}
+
+.theme-toggle__icon {
+  font-size: 12px;
+}
+
+.theme-toggle__label {
+  font-weight: 500;
+}
+/* Добавьте в начало файла или измените существующие */
+:root {
+  /* Светлая тема - можно сделать более теплые/холодные оттенки */
+
+  --bg-primary: #ffffff;
+  --bg-secondary: rgba(246, 247, 248, 1);
+  --header-bg: #f6f7f8; /* Чуть темнее фона */
+  --text-primary: rgba(0, 0, 0, 0.75);
+  --text-secondary: rgba(0, 0, 0, 0.54);
+  --accent-color: rgb(103, 57, 144);
+  --border-color: #e1e5eb; /* Светлая серая рамка */
+  --input-bg: rgba(155, 155, 155, 0.359);
+  --bg-accent-hover: rgb(188, 113, 255, 0.5);
+  --bg-card: #ffff;
+  --bg-neutral-1: rgba(36, 74, 127, 0.06);
+  --bg-accent-1: rgba(188, 45, 255, 0.5);
+  --text-action: rgba(188, 45, 255);
+  --disabled-button-2: #dcdbdb;
+  --delete-btn: #868686;
+  --delete-hover: #adadad;
+  --burger: #f6f7f8; /* Чуть темнее фона */
+}
+
+[data-theme="dark"] {
+  /* Темная тема - можно сделать не чисто черную */
+  --bg-primary: #352f44;
+
+  --header-bg: #251f33; /* Чуть светлее фона */
+  --text-primary: #f1f5f9; /* Мягкий белый */
+  --text-secondary: #f1f5f9; /* Мягкий белый */
+  --accent-color: rgba(203, 144, 255, 0.788);
+  --border-color: #334155; /* Темно-синяя рамка */
+  --bg-card: #251f33;
+  --bg-neutral-1: rgba(0, 0, 0, 0.478);
+  --bg-accent-1: rgba(192, 138, 217, 0.673);
+  --text-action: rgba(207, 149, 233, 0.847);
+  --disabled-button-2: rgba(0, 0, 0, 0.478);
+  --delete-btn: rgba(0, 0, 0, 0.478);
+  --delete-hover: #000000;
+  --burger: #110e19;
+}
+/* Плавные переходы */
+* {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Стили для темы */
+.header {
+  background-color: var(--header-bg);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.text-input {
+  background-color: var(--bg-neutral-1);
+  color: var(--text-primary);
+  border: 1px solid var(--input-border);
+}
+
+.text-input:hover {
+  background-color: var(--bg-accent-hover);
+}
+.text-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.reg-wrap {
+  color: var(--text-primary);
+}
+
+.reg-wrap:hover {
+  color: var(--accent-color);
+}
+
+.search-icon-button,
+.reset-icon-button {
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.search-icon-button:hover,
+.reset-icon-button:hover {
+  color: var(--accent-color);
+}
+
+.bx-globe {
+  color: var(--accent-color);
+}
+
+.hr-line {
+  border-color: var(--border-color);
+  background-color: var(--border-color);
+}
+
+.theme-toggle-container {
+  margin-left: 15px;
+}

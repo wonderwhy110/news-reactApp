@@ -8,19 +8,20 @@
 @import "css/comments.css";
 @import "css/sceleton.css";
 @import "css/confirmModal.css";
+@import "css/themeToggle.css";
+@import "css/burger-menu.css";
 
 :root {
-  --bg-neutral-1: rgba(36, 74, 127, 0.06);
+
   --border-neutral-1: rgb(155, 155, 155);
   --bg-focus-1: #a8b9bc33;
   --bg-active-1: rgba(77, 162, 179, 0.2);
-  --text-primary: rgba(0, 0, 0, 0.75);
-  --text-secondary: rgba(0, 0, 0, 0.54);
-  --bg-accent-1: rgba(188, 45, 255, 0.5);
+
+  
   --bg-accent-hover: rgb(188, 113, 255, 0.5);
   --bg-accent-active: rgb(188, 113, 255, 0.5);
-  --text-action:rgba(188, 45, 255);
-  --text-primary-on-accent: rgba(51, 51, 51, 1);
+ 
+  --text-primary-on-accent: rgb(16, 16, 16);
 }
 
 * {

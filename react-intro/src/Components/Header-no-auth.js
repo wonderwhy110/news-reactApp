@@ -12,6 +12,8 @@ import "boxicons/css/boxicons.min.css";
 // Импорты картинок
 import arrow from "../assets/arrow-out.png";
 import avatar from "../assets/default-avatar.png";
+import { useTheme } from "../context/ThemeContext";
+import ThemeToggle from "./ThemeToggle";
 
 function HeaderNoAuth({
   searchQuery,
@@ -21,7 +23,7 @@ function HeaderNoAuth({
 }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const { theme } = useTheme();
   // Простой state - только аватар
   const [userAvatar, setUserAvatar] = useState("");
   const [loading, setLoading] = useState(true);
@@ -84,6 +86,18 @@ function HeaderNoAuth({
 
     fetchUserAvatar();
   }, [isAuth, setUserAvatar]);
+
+  const headerStyles = {
+    backgroundColor: "var(--header-bg)",
+    color: "var(--text-primary)",
+    borderBottom: "1px solid var(--border-color)",
+    transition: "all 0.3s ease",
+  };
+
+  const inputStyles = {
+    color: "var(--text-primary)",
+  };
+
   const handleLogoClick = (e) => {
     navigate("/");
 
@@ -92,8 +106,8 @@ function HeaderNoAuth({
 
   return (
     <>
-      <header className="header">
-        <div className="logo-container">
+      <header className={`header ${theme}`} style={headerStyles}>
+        <div className="logo-container" style={headerStyles}>
           <div className="left-group">
             <Link to="/" onClick={handleLogoClick}>
               <i className="bx bx-globe bx-bounce" />
@@ -107,12 +121,13 @@ function HeaderNoAuth({
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 onKeyPress={handleKeyPress}
+                style={inputStyles}
               />
               {searchQuery && (
                 <button className="reset-icon-button" onClick={() => onReset()}>
                   <i
                     className="bx bx-x"
-                    style={{ color: "rgba(0, 0, 0, 0.54)" }}
+                    style={{ color: "var(--text-secondary)" }}
                   />
                 </button>
               )}
@@ -123,7 +138,7 @@ function HeaderNoAuth({
               >
                 <i
                   className="bx bx-search"
-                  style={{ color: "rgba(0, 0, 0, 0.54)" }}
+                  style={{ color: "var(--text-secondary)" }}
                 />
               </button>
             </div>
@@ -131,6 +146,17 @@ function HeaderNoAuth({
 
           {isAuth ? (
             <div className="right-group">
+
+               <input
+                type="checkbox"
+                id="mobile-menu-toggle"
+                className="mobile-menu-checkbox"
+              />
+
+              <label htmlFor="mobile-menu-toggle" className="mobile-menu-btn">
+                <i className="bx bx-menu" />
+              </label>
+              
               <img
                 className="avatar-post head"
                 src={userAvatar || avatar}
@@ -142,11 +168,7 @@ function HeaderNoAuth({
                 }}
               />
 
-              <Link
-                to="/"
-                onClick={logoutHandler}
-                className="reg-wrap "
-              >
+              <Link to="/" onClick={logoutHandler} className="reg-wrap desktop-only">
                 Выйти
                 <img
                   className="reg-arrow"
@@ -155,9 +177,37 @@ function HeaderNoAuth({
                   alt="Выйти"
                 />
               </Link>
+
+              
+
+              {/* Мобильное меню */}
+              <div className="mobile-menu">
+                <div className="mobile-menu-content">
+                  <div className="mobile-menu-item">
+                    <span>Тема:</span>
+                    <ThemeToggle />
+                  </div>
+
+                  <label
+                    htmlFor="mobile-menu-toggle"
+                    className="mobile-menu-close"
+                  >
+                    <i className="bx bx-x" /> Закрыть
+                  </label>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="right-group">
+              <input
+                type="checkbox"
+                id="mobile-menu-toggle"
+                className="mobile-menu-checkbox"
+              />
+
+              <label htmlFor="mobile-menu-toggle" className="mobile-menu-btn">
+                <i className="bx bx-menu" />
+              </label>
               <Link to="/registration" className="reg-wrap desktop-only">
                 Зарегистрироваться
                 <img
@@ -177,6 +227,35 @@ function HeaderNoAuth({
                   aria-hidden="true"
                 />
               </Link>
+
+              <div
+                className="theme-toggle-wrapper desktop-only"
+                style={{
+                  position: "fixed",
+
+                  right: "20px",
+                  zIndex: 1000,
+                }}
+              >
+                <ThemeToggle />
+              </div>
+
+              {/* Мобильное меню */}
+              <div className="mobile-menu">
+                <div className="mobile-menu-content">
+                  <div className="mobile-menu-item">
+                    <span>Тема:</span>
+                    <ThemeToggle />
+                  </div>
+
+                  <label
+                    htmlFor="mobile-menu-toggle"
+                    className="mobile-menu-close"
+                  >
+                    <i className="bx bx-x" /> Закрыть
+                  </label>
+                </div>
+              </div>
             </div>
           )}
         </div>

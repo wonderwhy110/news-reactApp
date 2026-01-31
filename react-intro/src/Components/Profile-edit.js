@@ -266,7 +266,7 @@ const startNameEditing = () => {
                 accept="image/*"
                 onChange={handleAvatarUpload}
                 disabled={uploading}
-                style={{ display: "none" }}
+                style={{ display: "none" , color : 'var(--text-primary)'}}
               />
             </label>
           </div>
@@ -276,6 +276,7 @@ const startNameEditing = () => {
               {isEditingName ? (
       <div className="name-edit-container">
         <input
+           style ={{color : 'var(--text-primary)'}}
           type="text"
           value={tempName}
           className="text-input medium userName"
@@ -319,6 +320,7 @@ const startNameEditing = () => {
           type="button"
           onClick={startNameEditing}
           className="button small edit"
+          style ={{color : 'var(--text-primary)'}}
           title="Изменить имя"
         >
           <i className="bx bxs-edit-alt"></i>

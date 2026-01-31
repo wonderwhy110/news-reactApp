@@ -12,6 +12,7 @@ import "boxicons/css/boxicons.min.css";
 // Импорты картинок
 import arrow from "../assets/arrow-out.png";
 import avatar from "../assets/default-avatar.png";
+import ThemeToggle from "./ThemeToggle";
 
 function HeaderWithoutSearch({}) {
   const dispatch = useAppDispatch();
@@ -74,21 +75,56 @@ function HeaderWithoutSearch({}) {
     fetchUserAvatar();
   }, [isAuth, setUserAvatar]);
 
-  // Простая проверка загрузки
+  const headerStyles = {
+    backgroundColor: "var(--header-bg)",
+    color: "var(--text-primary)",
+
+    transition: "all 0.3s ease",
+  };
 
   return (
     <>
-      <header className="header">
-        <div className="logo-container">
+      <header className="header" style={headerStyles}>
+        <div className="logo-container" style={headerStyles}>
           <div className="left-group">
             <Link to="/">
               <i className="bx bx-globe bx-bounce" />
             </Link>
+
+            <input
+              type="checkbox"
+              id="mobile-menu-toggle"
+              className="mobile-menu-checkbox"
+            />
+
+            <label htmlFor="mobile-menu-toggle" className="mobile-menu-btn">
+              <i className="bx bx-menu" />
+            </label>
+
+            {/* Мобильное меню */}
+            <div className="mobile-menu">
+              <div className="mobile-menu-content">
+                <div className="mobile-menu-item">
+                  <span>Тема:</span>
+                  <ThemeToggle />
+                </div>
+
+                <label
+                  htmlFor="mobile-menu-toggle"
+                  className="mobile-menu-close"
+                >
+                  <i className="bx bx-x" /> Закрыть
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="theme-toggle-wrapper desktop-only">
+            <ThemeToggle />
           </div>
 
           {isAuth ? (
             <div className="right-group">
-             
               <img
                 className="avatar-post head"
                 src={userAvatar || avatar}
@@ -99,11 +135,7 @@ function HeaderWithoutSearch({}) {
                   e.target.src = avatar;
                 }}
               />
-              <Link
-                to="/"
-                onClick={logoutHandler}
-                className="reg-wrap"
-              >
+              <Link to="/" onClick={logoutHandler} className="reg-wrap">
                 Выйти
                 <img
                   className="reg-arrow"

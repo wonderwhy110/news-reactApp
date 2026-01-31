@@ -14,7 +14,7 @@ body {
 .content-reg {
   flex: 1 0 auto;
   display: flex;
-  background-color: #fff;
+
 }
 .header {
   flex: 0 0 64px;

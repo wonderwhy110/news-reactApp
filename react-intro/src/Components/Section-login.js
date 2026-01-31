@@ -30,7 +30,7 @@ function SectionLogin() {
           JSON.stringify({
             userId: data.userId,
             email: data.email,
-          })
+          }),
         );
 
         dispatch(
@@ -39,12 +39,12 @@ function SectionLogin() {
             email: data.email,
             token: data.token,
             avatar: data.avatar,
-          })
+          }),
         );
 
         toast.success("Вы вошли в аккаунт.");
         navigate("/");
-        window.location.reload()
+        window.location.reload();
       }
     } catch (err) {
       console.log("Login error:", err);
@@ -52,14 +52,24 @@ function SectionLogin() {
         err.response?.data?.message || err.message || "Ошибка авторизации";
       toast.error(errorMessage);
     }
+   
   };
+   const inputStyles = {
+      color: "var(--text-primary)",
+    };
 
   return (
     <section className="content-reg">
       <form
         className="login-dialog"
         onSubmit={loginHandler}
-        style={{ display: submitted ? "none" : "" }}
+        style={{
+          display: submitted ? "none" : "",
+          backgroundColor: " var(--bg-card)",
+
+          boxShadow: " box-shadow: 0 6px 34px rgba(0, 0, 0, 0.12)",
+          color: "var(--text-primary)",
+        }}
       >
         <header className="login-title">Вход</header>
 
@@ -70,6 +80,7 @@ function SectionLogin() {
               className="text-input large"
               placeholder="Логин"
               name="email"
+              style={inputStyles}
               onChange={(e) => setEmail(e.target.value)}
               value={email}
             />
@@ -80,6 +91,7 @@ function SectionLogin() {
               className="text-input large"
               placeholder="Пароль"
               name="password"
+              style={inputStyles}
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />

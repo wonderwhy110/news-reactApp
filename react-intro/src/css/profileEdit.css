@@ -137,10 +137,9 @@ input.medium.userName {
 }
 .button.small.edit {
   max-width:30px;
+  color : var(--text-primary)
 }
-.bx.bxs-edit-alt{
-  color:#434343;
-}
+
    h2 {
       
       font-family: "Neue Haas Unica W1G";

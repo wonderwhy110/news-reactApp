@@ -60,8 +60,8 @@
 }
 
 .delete-btn {
-  background: #868686;
-  color: rgb(0, 0, 0);
+  background: var(--delete-btn);
+  color: var( --text-primary);
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -73,5 +73,5 @@
   margin-bottom: 10px;
 }
 .delete-btn:hover{
-    background: #adadad;
+    background: var(--delete-hover);
 }

@@ -1,0 +1,107 @@
+/* Header.css или ваш существующий CSS */
+
+/* Десктопные стили */
+.theme-toggle-wrapper {
+  position: fixed;
+  right: 20px;
+  z-index: 1000;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--text-primary);
+  margin-right: 15px;
+}
+
+.mobile-only {
+  display: none;
+}
+
+/* Мобильное меню с чекбоксом */
+.mobile-menu-checkbox {
+  display: none;
+}
+
+.mobile-menu {
+  display: none;
+  width: 375px;
+
+  position: fixed;
+  top: 60px;
+  left: 0;
+
+  background: var(--burger);
+  z-index: 1001;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-menu-content {
+  padding: 20px;
+}
+
+.mobile-menu-item {
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: var(--text-primary);
+}
+
+.mobile-menu-close {
+  display: block;
+  padding: 15px 0 0 0;
+  text-align: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+}
+
+/* Показываем меню при нажатом чекбоксе */
+.mobile-menu-checkbox:checked ~ .mobile-menu {
+  display: block;
+}
+
+/* Медиа-запросы */
+@media screen and (max-width: 750px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: block !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .theme-toggle-wrapper.desktop-only {
+    display: none !important;
+  }
+}
+
+@media screen and (min-width: 751px) {
+  .mobile-only {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: none !important;
+  }
+
+  .mobile-menu {
+    display: none !important;
+  }
+}

@@ -17,9 +17,11 @@ import { login, logout } from "./store/user/userSlice";
 import AuthInitializer from "./Components/AuthInitializer";
 import Comments from "./Pages/Comments";
 import SnowEffect from "./Components/SnowEffect";
+import { useTheme } from "./context/ThemeContext";
 
 function App() {
   const dispatch = useAppDispatch();
+  const { theme } = useTheme(); // Получаем текущую тему
 
   const checkAuth = async () => {
     const token = getTokenFromLocalStorage();
@@ -93,12 +95,11 @@ function App() {
   const performSearch = async (query) => {
     console.log("🔍 === SEARCH DEBUG START ===");
     console.log("Search query:", query);
-    if(!query || !query.trim()){
-      return
+    if (!query || !query.trim()) {
+      return;
     }
 
-      setSearchDone(false);
-    
+    setSearchDone(false);
 
     try {
       let results;
@@ -144,11 +145,9 @@ function App() {
     }
   };
   const handleSearchChange = (value) => {
-
-      setSearchQuery(value);
-      // Сбрасываем флаг поиска при изменении запроса
-      setSearchDone(false);
-    
+    setSearchQuery(value);
+    // Сбрасываем флаг поиска при изменении запроса
+    setSearchDone(false);
   };
 
   const searchPosts = async (query) => {
@@ -161,7 +160,15 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <div
+      className={`app ${theme}`}
+      style={{
+        backgroundColor: "var(--bg-primary)",
+        color: "var(--text-primary)",
+        minHeight: "100vh",
+        transition: "background-color 0.3s ease, color 0.3s ease",
+      }}
+    >
       <Router>
         <AuthInitializer />
         <SnowEffect />

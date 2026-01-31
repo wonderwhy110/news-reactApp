@@ -140,7 +140,15 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
   return (
     <div className="wrap-comments">
       <section className="content comments">
-        <div className="card single">
+        <div
+          className="card single"
+          style={{
+            backgroundColor: " var(--bg-card)",
+
+            boxShadow: " box-shadow: 0 6px 34px rgba(0, 0, 0, 0.12)",
+            color: "var(--text-primary)",
+          }}
+        >
           <header className="card-title">
             <img
               className="avatar-post"
@@ -185,7 +193,16 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
               parseInt(comment.userId) === parseInt(userId);
 
             return (
-              <div key={comment.id} className="card comment">
+              <div
+                key={comment.id}
+                className="card comment"
+                style={{
+                  backgroundColor: " var(--bg-card)",
+
+                  boxShadow: " box-shadow: 0 6px 34px rgba(0, 0, 0, 0.12)",
+                  color: "var(--text-primary)",
+                }}
+              >
                 <header className="card-title">
                   <img
                     className="avatar-post"

@@ -29,7 +29,7 @@ function ContentNoAuth({
     if (disabled) return;
     const token = localStorage.getItem("token");
     if (!token) {
-      alert("Вы не авторизованы! Пожалуйста, войдите в систему.")
+      alert("Вы не авторизованы! Пожалуйста, войдите в систему.");
       return;
     }
 
@@ -116,7 +116,16 @@ function ContentNoAuth({
         const likesCount = getLikesCount(post);
 
         return (
-          <div key={postId} className="card">
+          <div
+            key={postId}
+            className="card"
+            style={{
+              backgroundColor: " var(--bg-card)",
+        
+              boxShadow: " box-shadow: 0 6px 34px rgba(0, 0, 0, 0.12)",
+              color: "var(--text-primary)",
+            }}
+          >
             <header className="card-title">
               <img
                 className="avatar-post"
@@ -127,10 +136,10 @@ function ContentNoAuth({
                 }}
               />
               <h1>{post.user?.name || "Неизвестный автор"}</h1>
-                  <small className="time">
-                                  {timeAgo(post.createdAt)} {/* "3 часа назад" */}
-                                  {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
-                                </small>
+              <small className="time">
+                {timeAgo(post.createdAt)} {/* "3 часа назад" */}
+                {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
+              </small>
             </header>
 
             {post.title && <h3 className="post-title">{post.title}</h3>}
