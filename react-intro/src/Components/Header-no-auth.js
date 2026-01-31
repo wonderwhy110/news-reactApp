@@ -146,8 +146,7 @@ function HeaderNoAuth({
 
           {isAuth ? (
             <div className="right-group">
-
-               <input
+              <input
                 type="checkbox"
                 id="mobile-menu-toggle"
                 className="mobile-menu-checkbox"
@@ -156,7 +155,7 @@ function HeaderNoAuth({
               <label htmlFor="mobile-menu-toggle" className="mobile-menu-btn">
                 <i className="bx bx-menu" />
               </label>
-              
+
               <img
                 className="avatar-post head"
                 src={userAvatar || avatar}
@@ -168,7 +167,11 @@ function HeaderNoAuth({
                 }}
               />
 
-              <Link to="/" onClick={logoutHandler} className="reg-wrap desktop-only">
+              <Link
+                to="/"
+                onClick={logoutHandler}
+                className="reg-wrap desktop-only"
+              >
                 Выйти
                 <img
                   className="reg-arrow"
@@ -178,7 +181,17 @@ function HeaderNoAuth({
                 />
               </Link>
 
-              
+              <div
+                className="theme-toggle-wrapper desktop-only"
+                style={{
+                  position: "fixed",
+
+                  right: "20px",
+                  zIndex: 1000,
+                }}
+              >
+                <ThemeToggle />
+              </div>
 
               {/* Мобильное меню */}
               <div className="mobile-menu">
