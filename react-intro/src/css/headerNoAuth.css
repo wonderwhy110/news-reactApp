@@ -2,6 +2,7 @@
   flex: 0 0 64px;
   width: 100%;
   background-color: rgba(246, 247, 248, 1);
+  position: relative;
 }
 
 .logo {

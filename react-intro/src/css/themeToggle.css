@@ -67,7 +67,7 @@
   --text-primary: rgba(0, 0, 0, 0.75);
   --text-secondary: rgba(0, 0, 0, 0.54);
   --accent-color: rgb(103, 57, 144);
-  --border-color: #e1e5eb; /* Светлая серая рамка */
+
   --input-bg: rgba(155, 155, 155, 0.359);
   --bg-accent-hover: rgb(188, 113, 255, 0.5);
   --bg-card: #ffff;
@@ -88,7 +88,6 @@
   --text-primary: #f1f5f9; /* Мягкий белый */
   --text-secondary: #f1f5f9; /* Мягкий белый */
   --accent-color: rgba(203, 144, 255, 0.788);
-  --border-color: #334155; /* Темно-синяя рамка */
   --bg-card: #251f33;
   --bg-neutral-1: rgba(0, 0, 0, 0.478);
   --bg-accent-1: rgba(192, 138, 217, 0.673);

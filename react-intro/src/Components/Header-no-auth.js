@@ -90,7 +90,7 @@ function HeaderNoAuth({
   const headerStyles = {
     backgroundColor: "var(--header-bg)",
     color: "var(--text-primary)",
-    borderBottom: "1px solid var(--border-color)",
+ 
     transition: "all 0.3s ease",
   };
 
