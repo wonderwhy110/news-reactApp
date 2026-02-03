@@ -1,26 +1,23 @@
 .text-input.large.comment {
-   width: 80%;
+  width: 80%;
   height: 116px;
-  
+  z-index: 200 !important;
 }
 .content.comments {
-    width: 100%;
+  width: 100%;
   gap: 24px;
   align-items: flex-end;
-
 }
 .wrap-comments {
   margin: auto;
-    max-width: 824px;
-  
+  max-width: 824px;
+
   display: flex;
-
 }
-.time{
+.time {
   color: #666;
-  size: 12px ;
+  size: 12px;
   align-content: center;
-
-
- 
+  padding-left: 10px;
+  
 }

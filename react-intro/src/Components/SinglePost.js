@@ -159,10 +159,7 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
               }}
             />
             <h1>{localPost.user?.name || "Неизвестный автор"}</h1>
-            <small className="time">
-              {timeAgo(localPost.createdAt)} {/* "3 часа назад" */}
-              {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
-            </small>
+            
           </header>
 
           <p>{localPost.content}</p>
@@ -181,7 +178,12 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
 
             <button type="button" className="button secondary" disabled={true}>
               Комментарии {comments?.length || 0}
-            </button>
+            </button> 
+
+            <small className="time">
+              {timeAgo(localPost.createdAt)} {/* "3 часа назад" */}
+              {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
+            </small>
           </footer>
         </div>
         {comments &&
@@ -213,23 +215,33 @@ function SinglePost({ post, onPostUpdated, disabled = false }) {
                     }}
                   />
                   <h1>{comment.user?.name || "Неизвестный автор"}</h1>
-                  <small className="time">
-                    {timeAgo(comment.createdAt)} {/* "3 часа назад" */}
-                    {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
-                  </small>
+                  
                 </header>
 
                 <p className="comment-content">{comment.content}</p>
+               
 
                 {/* Кнопка удаления (показываем только автору) */}
                 {isAuthor && (
-                  <button
+            
+                     <button
                     onClick={() => openDeleteModal(comment.id)}
                     className="delete-btn"
                   >
                     <i class="bx  bx-trash"></i>
                   </button>
-                )}
+                  
+              
+             
+               
+
+                  
+                )} 
+
+                    <small className="time">
+                    {timeAgo(comment.createdAt)} {/* "3 часа назад" */}
+                    {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
+                  </small>
               </div>
             );
           })}

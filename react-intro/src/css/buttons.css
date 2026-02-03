@@ -5,7 +5,7 @@
   --button-text: var(--text-action);
   background-color: var(--button-bg);
   color: var(--button-text);
-
+  z-index: 200 !important;
   border: none;
   border-radius: 8px;
   height: 44px;
@@ -19,7 +19,6 @@
     --button-text: var(--text-primary-on-accent);
     --button-hover: var(--bg-accent-hover);
     --button-active: var(--bg-accent-active);
-    
   }
   &.secondary {
     --button-bg: var(--bg-neutral-1);
@@ -29,7 +28,7 @@
   }
 
   &:disabled {
-    background-color:var(--disabled-button-2) ;
+    background-color: var(--disabled-button-2);
     color: var(--text-primary);
   }
 

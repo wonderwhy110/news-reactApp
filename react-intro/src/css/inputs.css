@@ -11,6 +11,8 @@
   border-width: 2px;
   border-radius: var(--input-border-radius);
 
+  z-index: 100;
+
   &::placeholder {
     color: var(--text-secondary);
   }
@@ -28,6 +30,7 @@
     line-height: 24px;
     padding: 16px;
     height: 56px;
+
 
     --input-border-radius: 12px;
   }

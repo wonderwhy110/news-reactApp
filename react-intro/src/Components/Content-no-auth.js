@@ -136,10 +136,7 @@ function ContentNoAuth({
                 }}
               />
               <h1>{post.user?.name || "Неизвестный автор"}</h1>
-              <small className="time">
-                {timeAgo(post.createdAt)} {/* "3 часа назад" */}
-                {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
-              </small>
+             
             </header>
 
             {post.title && <h3 className="post-title">{post.title}</h3>}
@@ -166,6 +163,11 @@ function ContentNoAuth({
                   Комментарии {post.comments?.length || 0}
                 </button>
               </Link>
+
+               <small className="time">
+                 {timeAgo(post.createdAt)} {/* "3 часа назад" */}
+                {/* или smartFormat(comment.createdAt) для "сегодня в 14:30" */}
+              </small>
             </footer>
           </div>
         );

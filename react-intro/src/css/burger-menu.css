@@ -39,10 +39,16 @@
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
   border-left: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+
+  z-index: 1000;
+  
 }
 
 .mobile-menu-content {
   padding: 20px;
+      
+    z-index: 1000;
+    
 }
 
 .mobile-menu-item {
